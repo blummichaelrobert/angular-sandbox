@@ -101,6 +101,10 @@ export class MusicKeyService {
         this.minorKeyOmissionIndices = this.minorKeyOmissionIndices.filter(index => index !== filter);
     }
 
+    setMusicKey(selection: string) {
+        this.musicKey = this.getMusicKey(selection);
+    }
+
     resetOmissions(type = 'major') {
         if (type !== 'major') {
             this.minorKeyOmissionIndices = [1, 4, 6, 9, 11];

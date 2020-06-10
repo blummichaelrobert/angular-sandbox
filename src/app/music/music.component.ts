@@ -1,8 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
-import { MusicKey } from './music.models';
 import { GooglePieChart, GooglePieChartOptions } from '../shared/models/google-pie-chart.model';
 
 @Component({
@@ -22,8 +21,6 @@ export class MusicComponent {
 
     keyPickerVisual: GooglePieChart;
     musicKeyVisual: GooglePieChart;
-
-    musicKey: MusicKey;
 
     constructor(
         private googleChartService: GoogleChartService,
@@ -54,7 +51,7 @@ export class MusicComponent {
 
     getCurrentBackgroundColors(): string[] {
 
-        const musicKeyCopy = this.copyObject(this.musicKey);
+        const musicKeyCopy = this.copyObject(this.musicKeyService.musicKey);
 
         const backgroundColors: string[] = [];
 
@@ -71,7 +68,8 @@ export class MusicComponent {
 
         const selection = event.selection[0].row.toString();
 
-        this.musicKey = this.musicKeyService.getMusicKey(selection);
+        this.musicKeyService.setMusicKey(selection);
+
 
         if (!this.intervalBtnState.showingMajorKey) {
             this.musicKeyVisual.data = this.googleChartService.getKeyDataSet('minor');
