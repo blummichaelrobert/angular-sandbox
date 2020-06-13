@@ -1,0 +1,57 @@
+<h3><i class="fab fa-draft2digital"></i>Chord Progressions:</h3>
+<google-chart #scaleChart
+              [type]="type"
+              [data]="chartData.data"
+              [options]="keyPickerChartOptions">
+</google-chart>
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleClick()">
+            I IV V
+        </button>
+        <button type="button"
+                class="btn btn-secondary">
+            I iv IV V
+        </button>
+        <button type="button"
+                class="btn btn-secondary float-right">
+            ii V I
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary">
+            I vi ii V
+        </button>
+        <button type="button"
+                class="btn btn-secondary">
+            I V vi IV
+        </button>
+        <button type="button"
+                class="btn btn-secondary">
+            I IV vi V
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary">
+            I iii IV
+        </button>
+        <button type="button"
+                class="btn btn-secondary">
+            I IV I V
+        </button>
+        <button type="button"
+                class="btn btn-secondary">
+            I IV ii V
+        </button>
+    </div>
+
+    <h3>Version {{major}}</h3>
+</div>

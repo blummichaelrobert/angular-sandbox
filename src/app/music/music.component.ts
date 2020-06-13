@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChange } from '@angular/core';
 
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
@@ -19,8 +19,10 @@ export class MusicComponent {
     keyVisualBackgroundColors: string[] = [];
     intervalBtnState: IntervalState;
 
-    keyPickerVisual: GooglePieChart;
-    musicKeyVisual: GooglePieChart;
+    keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
+    musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
+
+    major = 1;
 
     constructor(
         private googleChartService: GoogleChartService,
@@ -31,17 +33,21 @@ export class MusicComponent {
 
         this.setDefaultIntervalButtonState();
 
-        this.keyPickerVisual = this.googleChartService.getNewPieChart();
+        // this.keyPickerVisual = this.googleChartService.getNewPieChart();
         this.keyPickerVisual.type = 'PieChart';
         this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
         this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
 
-        this.musicKeyVisual = this.googleChartService.getNewPieChart();
+        // this.musicKeyVisual = this.googleChartService.getNewPieChart();
         this.musicKeyVisual.type = 'PieChart';
         this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
         this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;
               
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+    }
+
+    ngOnChanges(changes: SimpleChange) {
+        console.log(changes);
     }
 
     copyObject(source: object): object {
@@ -213,7 +219,15 @@ export class MusicComponent {
         const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = this.keyVisualBackgroundColors;
 
-        this.musicKeyVisual.googleChartOptions = optionsCopy;
+        const data: (string | number)[][] = this.googleChartService.getKeyDataSet();
+
+        const piechart: GooglePieChart = {
+            type: 'PieChart',
+            data: data,
+            googleChartOptions: optionsCopy
+        };
+
+        this.musicKeyVisual = piechart;
     }
 
     whiteOutKeyPositions(indices: number[]) {

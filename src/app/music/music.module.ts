@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GoogleChartsModule } from 'angular-google-charts';
 
 import { MusicComponent } from './music.component';
+import { ChordProgressionComponent } from './chord-progression/chord-progression.component';
 
 const routes: Routes = [{ path: '', component: MusicComponent }];
 
@@ -13,7 +14,10 @@ const routes: Routes = [{ path: '', component: MusicComponent }];
         CommonModule,
         GoogleChartsModule,
     ],
-    declarations: [MusicComponent]
+    declarations: [
+        ChordProgressionComponent,
+        MusicComponent
+    ]
 })
 
 export class MusicModule { }

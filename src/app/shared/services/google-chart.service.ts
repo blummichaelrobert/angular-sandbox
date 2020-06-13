@@ -118,6 +118,18 @@ export class GoogleChartService {
         this.pieChart = new GooglePieChart();
     }
 
+    createDataSet(keyLabels: string[]): (string | number)[][] {
+        const dataSet = [];
+
+        const sliceSize = 100 / keyLabels.length;
+
+        keyLabels.forEach(label => {
+            dataSet.push([label, sliceSize]);
+        });
+
+        return dataSet;
+    }
+
     getPieChart(): GooglePieChart {
         return this.pieChart;
     }

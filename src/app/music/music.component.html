@@ -109,55 +109,7 @@
             </div>
         </div>
         <div class="col-xs-4">
-            <h3>Chord Progressions:</h3>
-            <div class="row">
-                <div class="col-xs-12">
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I IV V
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I iv IV V
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary float-right">
-                        ii V I
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I vi ii V
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I V vi IV
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I IV vi V
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I iii IV
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I IV I V
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary">
-                        I IV ii V
-                    </button>
-                </div>
-            </div>
+            <chord-progression [chartData]="musicKeyVisual"></chord-progression>
         </div>
     </div>
 
