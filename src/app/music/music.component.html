@@ -51,73 +51,73 @@
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing2nd ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleSecondIntervalClick()">
+                        (click)="handleIntervalClick('showing2nd', 2)">
                     ii
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing2nd ?'music-btn-pressed' : 'music-btn'"
-                        (click)="handleSecondIntervalClick()">
+                        (click)="handleIntervalClick('showing2nd', 2)">
                     dim
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing3rd ?'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMajorThirdIntervalClick()">
+                        (click)="handleIntervalClick('showing3rd', 4)">
                     iii
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing3rd ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMinorThirdIntervalClick()">
+                        (click)="handleIntervalClick('showing3rd', 3)">
                     III
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing4th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleFourthIntervalClick()">
+                        (click)="handleIntervalClick('showing4th', 5)">
                     IV
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing4th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleFourthIntervalClick()">
+                        (click)="handleIntervalClick('showing4th', 5)">
                     iv
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing5th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleFifthIntervalClick()">
+                        (click)="handleIntervalClick('showing5th', 7)">
                     V
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing5th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleFifthIntervalClick()">
+                        (click)="handleIntervalClick('showing5th', 7)">
                     v
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing6th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMajorSixthIntervalClick()">
+                        (click)="handleIntervalClick('showing6th', 9)">
                     vi
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing6th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMinorSixthIntervalClick()">
+                        (click)="handleIntervalClick('showing6th', 8)">
                     VI
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing7th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMajorSeventhIntervalClick()">
+                        (click)="handleIntervalClick('showing7th', 11)">
                     dim
                 </button>
                 <button type="button"
                         *ngIf="!intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showing7th ? 'music-btn-pressed' : 'music-btn'"
-                        (click)="handleMinorSeventhIntervalClick()">
+                        (click)="handleIntervalClick('showing7th', 10)">
                     VII
                 </button>
             </div>

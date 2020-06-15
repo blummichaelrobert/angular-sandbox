@@ -65,7 +65,6 @@ export class MusicComponent {
         return backgroundColors;
     }
 
-    // todo: need to remaps rows if showing cirlcle of 5ths
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
 
         let selection = event.selection[0].row;
@@ -107,42 +106,6 @@ export class MusicComponent {
         this.updateKeyVisualizationColors(this.musicKeyService.majorKeyOmissionIndices);
     }
 
-    handleSecondIntervalClick() {
-        this.handleIntervalClick('showing2nd', 2);
-    }
-
-    handleMajorThirdIntervalClick() {
-        this.handleIntervalClick('showing3rd', 4);
-    }
-
-    handleMinorThirdIntervalClick() {
-        this.handleIntervalClick('showing3rd', 3);
-    }
-
-    handleFourthIntervalClick() {
-        this.handleIntervalClick('showing4th', 5);
-    }
-
-    handleFifthIntervalClick() {
-        this.handleIntervalClick('showing5th', 7);
-    }
-
-    handleMajorSixthIntervalClick() {
-        this.handleIntervalClick('showing6th', 9);
-    }
-
-    handleMinorSixthIntervalClick() {
-        this.handleIntervalClick('showing6th', 8);
-    }
-
-    handleMajorSeventhIntervalClick() {
-        this.handleIntervalClick('showing7th', 11);
-    }
-
-    handleMinorSeventhIntervalClick() {
-        this.handleIntervalClick('showing7th', 10);
-    }
-
     handleIntervalClick(interval: string, index: number) {
         this.toggleIntervalButton(interval);
 
@@ -174,6 +137,7 @@ export class MusicComponent {
     }
 
     handleShowCircleByPerfect5ths() {
+        // toggle property
         this.showingCircleOf5ths = !this.showingCircleOf5ths;
 
         if (!this.showingCircleOf5ths) {
@@ -196,9 +160,8 @@ export class MusicComponent {
         // set options
         const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = bgColors;
-
         this.keyPickerVisual.googleChartOptions = optionsCopy;
-        console.log(this.keyPickerVisual.googleChartOptions);
+
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
     }
 
