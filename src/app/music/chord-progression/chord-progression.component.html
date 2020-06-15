@@ -1,22 +1,24 @@
 <h3><i class="fab fa-draft2digital"></i>Chord Progressions:</h3>
 <google-chart #scaleChart
               [type]="type"
-              [data]="chartData.data"
-              [options]="keyPickerChartOptions">
+              [data]="data"
+              [options]="chartOptions">
 </google-chart>
 <div class="row">
     <div class="col-xs-12">
         <button type="button"
                 class="btn btn-secondary"
-                (click)="handleClick()">
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th'])">
             I IV V
         </button>
         <button type="button"
-                class="btn btn-secondary">
-            I iv IV V
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major6th', 'Perfect4th', 'Perfect5th'])">
+            I vi IV V
         </button>
         <button type="button"
-                class="btn btn-secondary float-right">
+                class="btn btn-secondary float-right"
+                (click)="handleProgressionSelected(['Major2nd', 'Perfect5th', 'Root'])">
             ii V I
         </button>
     </div>
@@ -24,15 +26,18 @@
 <div class="row">
     <div class="col-xs-12">
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major6th', 'Major2nd', 'Perfect5th'])">
             I vi ii V
         </button>
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect5th', 'Major6th', 'Perfect4th'])">
             I V vi IV
         </button>
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Major6th', 'Perfect5th'])">
             I IV vi V
         </button>
     </div>
@@ -40,18 +45,19 @@
 <div class="row">
     <div class="col-xs-12">
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major3rd', 'Perfect4th'])">
             I iii IV
         </button>
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Root', 'Perfect5th'])">
             I IV I V
         </button>
         <button type="button"
-                class="btn btn-secondary">
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Major2nd', 'Perfect5th'])">
             I IV ii V
         </button>
     </div>
-
-    <h3>Version {{major}}</h3>
 </div>

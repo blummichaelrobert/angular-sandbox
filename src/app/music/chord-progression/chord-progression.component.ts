@@ -2,6 +2,8 @@ import { Component, Input, SimpleChange } from '@angular/core';
 import { GoogleChartService } from '../../shared/services/google-chart.service';
 import { MusicKeyService } from '../../shared/services/music-key.service';
 import { GooglePieChart, GooglePieChartOptions } from '../../shared/models/google-pie-chart.model';
+import { MusicKey } from '../music.models';
+import { interval } from 'rxjs';
 
 @Component({
     selector: 'chord-progression',
@@ -15,31 +17,69 @@ import { GooglePieChart, GooglePieChartOptions } from '../../shared/models/googl
 
 export class ChordProgressionComponent {
 
-    constructor(private googleChartService: GoogleChartService) { }
+    @Input() musicKey: MusicKey;
 
-    @Input() chartData: GooglePieChart;
-
+    chartOptions: GooglePieChartOptions;
+    data: (string | number)[][];
     type = 'PieChart';
 
-    keyPickerChartOptions: GooglePieChartOptions;
+    constructor(private googleChartService: GoogleChartService,
+                private musicKeyService: MusicKeyService) { }
 
     ngOnInit() {
     }
 
-    ngOnChanges(change: SimpleChange) {
-        this.keyPickerChartOptions = {
+    ngOnChanges() {
+        this.handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th']);
+    }
+
+    determineStartAngle(intervals: string[]): number {
+        let startAngle = 0;
+        if (intervals.length === 3)
+            startAngle = -60
+
+        if (intervals.length === 4)
+            startAngle = -45
+
+        return startAngle;
+    }
+
+    getBackgroundColors(intervals: string[]): string[] {
+        const backgroundColors: string[] = [];
+        intervals.forEach(interval => {
+            const note = this.musicKey[interval]
+            backgroundColors.push(this.musicKeyService.getColor(note));
+        });
+        return backgroundColors;
+    }
+
+    handleProgressionSelected(intervals: string[]) {
+
+        this.setChartData(intervals);
+
+        this.setChartOptions(this.getBackgroundColors(intervals), this.determineStartAngle(intervals));
+    }
+
+    setChartData(intervals: string[]) {
+        const dataRequest: string[] = [];
+        intervals.forEach(interval => {
+            const note = this.musicKey[interval]
+            dataRequest.push(note);
+        });
+
+        this.data = this.googleChartService.createDataSet(dataRequest);
+    }
+
+    setChartOptions(backgroundColors: string[], startAngle: number) {
+        this.chartOptions = {
             pieHole: 0.4,
-            colors: change['chartData']['currentValue']['googleChartOptions']['colors'],
+            colors: backgroundColors,
             legend: { position: 'none' },
             height: 300,
             pieSliceText: 'label',
-            pieStartAngle: -15,
+            pieStartAngle: startAngle,
             tooltip: { trigger: 'none' },
             width: 300
         };
-    }
-
-    handleClick() {
-        const data = this.googleChartService.createDataSet(['A', 'D', 'E']);
     }
 }

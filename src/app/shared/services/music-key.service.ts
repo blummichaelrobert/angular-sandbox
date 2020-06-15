@@ -63,34 +63,12 @@ export class MusicKeyService {
         this.minorKeyOmissionIndices.push(index);
     }
 
-    createMusicKey(rawMusicKey: string[]) {
-    this.musicKey = {
-        Root: rawMusicKey[0],
-        minor2nd: rawMusicKey[1],
-        Major2nd: rawMusicKey[2],
-        minor3rd: rawMusicKey[3],
-        Major3rd: rawMusicKey[4],
-        Perfect4th: rawMusicKey[5],
-        diminished5th: rawMusicKey[6],
-        Perfect5th: rawMusicKey[7],
-        minor6th: rawMusicKey[8],
-        Major6th: rawMusicKey[9],
-        minor7th: rawMusicKey[10],
-        Major7th: rawMusicKey[11]
-    };
-    }
-
-    getMusicKey(key: string): MusicKey {
-
-        const rawMusicKey: string[] = this.chromaticMap.get(key);
-
-        this.createMusicKey(rawMusicKey);
-
-        return this.musicKey;
-    }
-
     getColor(key: string): string {
         return this.colorMap.get(key);
+    }
+
+    getMusicKey(): MusicKey {
+        return this.musicKey;
     }
 
     removeIndexFromMajorOmissions(filter: number) {
@@ -102,7 +80,27 @@ export class MusicKeyService {
     }
 
     setMusicKey(selection: string) {
-        this.musicKey = this.getMusicKey(selection);
+
+        const rawMusicKey: string[] = this.chromaticMap.get(selection);
+
+        this.setMusicKeyProps(rawMusicKey);
+    }
+
+    setMusicKeyProps(rawMusicKey: string[]) {
+        this.musicKey = {
+            Root: rawMusicKey[0],
+            minor2nd: rawMusicKey[1],
+            Major2nd: rawMusicKey[2],
+            minor3rd: rawMusicKey[3],
+            Major3rd: rawMusicKey[4],
+            Perfect4th: rawMusicKey[5],
+            diminished5th: rawMusicKey[6],
+            Perfect5th: rawMusicKey[7],
+            minor6th: rawMusicKey[8],
+            Major6th: rawMusicKey[9],
+            minor7th: rawMusicKey[10],
+            Major7th: rawMusicKey[11]
+        };
     }
 
     resetOmissions(type = 'major') {

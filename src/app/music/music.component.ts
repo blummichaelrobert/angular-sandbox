@@ -3,6 +3,7 @@ import { Component, SimpleChange } from '@angular/core';
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
 import { GooglePieChart, GooglePieChartOptions } from '../shared/models/google-pie-chart.model';
+import { MusicKey } from './music.models';
 
 @Component({
     selector: 'music',
@@ -21,8 +22,7 @@ export class MusicComponent {
 
     keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
     musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
-
-    major = 1;
+    musicKey: MusicKey = new MusicKey();
 
     constructor(
         private googleChartService: GoogleChartService,
@@ -33,12 +33,10 @@ export class MusicComponent {
 
         this.setDefaultIntervalButtonState();
 
-        // this.keyPickerVisual = this.googleChartService.getNewPieChart();
         this.keyPickerVisual.type = 'PieChart';
         this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
         this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
 
-        // this.musicKeyVisual = this.googleChartService.getNewPieChart();
         this.musicKeyVisual.type = 'PieChart';
         this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
         this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;
@@ -76,6 +74,8 @@ export class MusicComponent {
 
         this.musicKeyService.setMusicKey(selection);
 
+        // update input for chord progression => 
+        this.musicKey = this.musicKeyService.getMusicKey();
 
         if (!this.intervalBtnState.showingMajorKey) {
             this.musicKeyVisual.data = this.googleChartService.getKeyDataSet('minor');
@@ -219,15 +219,7 @@ export class MusicComponent {
         const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = this.keyVisualBackgroundColors;
 
-        const data: (string | number)[][] = this.googleChartService.getKeyDataSet();
-
-        const piechart: GooglePieChart = {
-            type: 'PieChart',
-            data: data,
-            googleChartOptions: optionsCopy
-        };
-
-        this.musicKeyVisual = piechart;
+        this.musicKeyVisual.googleChartOptions = optionsCopy;
     }
 
     whiteOutKeyPositions(indices: number[]) {
