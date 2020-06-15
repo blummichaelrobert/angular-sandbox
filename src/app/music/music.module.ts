@@ -5,6 +5,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
 
 import { MusicComponent } from './music.component';
 import { ChordProgressionComponent } from './chord-progression/chord-progression.component';
+import { FretboardComponent } from './fretboard/fretboard.component';
 
 const routes: Routes = [{ path: '', component: MusicComponent }];
 
@@ -16,6 +17,7 @@ const routes: Routes = [{ path: '', component: MusicComponent }];
     ],
     declarations: [
         ChordProgressionComponent,
+        FretboardComponent,
         MusicComponent
     ]
 })
