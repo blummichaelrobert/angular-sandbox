@@ -5,7 +5,8 @@
               [options]="chartOptions">
 </google-chart>
 <div class="row">
-    <div class="col-xs-12">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
         <button type="button"
                 class="btn btn-secondary"
                 (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th'])">
@@ -22,9 +23,28 @@
             ii V I
         </button>
     </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor6th', 'minor7th'])">
+            i VI VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'minor7th'])">
+            i iv VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary float-right"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th'])">
+            i iv v
+        </button>
+    </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
         <button type="button"
                 class="btn btn-secondary"
                 (click)="handleProgressionSelected(['Root', 'Major6th', 'Major2nd', 'Perfect5th'])">
@@ -41,9 +61,28 @@
             I IV vi V
         </button>
     </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor6th', 'minor3rd', 'minor7th'])">
+            i VI III VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Major2nd', 'Perfect5th', 'Root'])">
+            ii v i
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'minor6th'])">
+            i iv vi
+        </button>
+    </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
         <button type="button"
                 class="btn btn-secondary"
                 (click)="handleProgressionSelected(['Root', 'Major3rd', 'Perfect4th'])">
@@ -58,6 +97,24 @@
                 class="btn btn-secondary"
                 (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Major2nd', 'Perfect5th'])">
             I IV ii V
+        </button>
+    </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['minor6th', 'minor7th', 'Root'])">
+            VI VII i
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor7th', 'minor6th', 'minor7th'])">
+            i VII VI VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor7th', 'minor6th'])">
+            i VIIb7 VIb7
         </button>
     </div>
 </div>

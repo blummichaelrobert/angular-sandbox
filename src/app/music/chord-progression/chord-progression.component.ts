@@ -18,6 +18,7 @@ import { interval } from 'rxjs';
 export class ChordProgressionComponent {
 
     @Input() musicKey: MusicKey;
+    @Input() showingMajorKey: boolean;
 
     chartOptions: GooglePieChartOptions;
     data: (string | number)[][];
@@ -30,6 +31,12 @@ export class ChordProgressionComponent {
     }
 
     ngOnChanges() {
+
+        if (!this.showingMajorKey) {
+            this.handleProgressionSelected(['Root', 'minor6th', 'minor7th']);
+            return;
+        }
+
         this.handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th']);
     }
 

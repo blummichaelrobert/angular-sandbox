@@ -34,8 +34,14 @@
             </google-chart>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <button type="button"
+                        *ngIf="intervalBtnState.showingMajorKey"
                         [ngClass]="intervalBtnState.showingRoot ? 'music-btn-pressed' : 'music-btn'">
-                    R
+                    I
+                </button>
+                <button type="button"
+                        *ngIf="!intervalBtnState.showingMajorKey"
+                        [ngClass]="intervalBtnState.showingRoot ? 'music-btn-pressed' : 'music-btn'">
+                    i
                 </button>
                 <button type="button"
                         *ngIf="intervalBtnState.showingMajorKey"
@@ -114,7 +120,9 @@
     </div>
     <div class="col-xs-4">
         <div class="panel panel-default">
-            <chord-progression [musicKey]="musicKey"></chord-progression>
+            <chord-progression
+                               [musicKey]="musicKey"
+                               [showingMajorKey]="intervalBtnState.showingMajorKey"></chord-progression>
         </div>
     </div>
 </div>
