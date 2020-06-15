@@ -19,6 +19,7 @@ export class MusicComponent {
 
     keyVisualBackgroundColors: string[] = [];
     intervalBtnState: IntervalState;
+    showingCircleOf5ths = false;
 
     keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
     musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
@@ -30,16 +31,12 @@ export class MusicComponent {
     ) { }
 
     ngOnInit() {
-
+        
         this.setDefaultIntervalButtonState();
 
-        this.keyPickerVisual.type = 'PieChart';
-        this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
-        this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+        this.intializeKeyPickerChart();
 
-        this.musicKeyVisual.type = 'PieChart';
-        this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
-        this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;
+        this.intializeKeyVisualChart();
               
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
     }
@@ -68,11 +65,16 @@ export class MusicComponent {
         return backgroundColors;
     }
 
+    // todo: need to remaps rows if showing cirlcle of 5ths
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
 
-        const selection = event.selection[0].row.toString();
+        let selection = event.selection[0].row;
 
-        this.musicKeyService.setMusicKey(selection);
+        if (this.showingCircleOf5ths) {
+            selection = this.googleChartService.getCircleOf5thsMappedNumber(selection);
+        }
+
+        this.musicKeyService.setMusicKey(selection.toString());
 
         // update input for chord progression => 
         this.musicKey = this.musicKeyService.getMusicKey();
@@ -96,6 +98,7 @@ export class MusicComponent {
             this.setDefaultIntervalButtonState('minor');
             this.musicKeyService.resetOmissions('minor');
             this.updateKeyVisualizationColors(this.musicKeyService.minorKeyOmissionIndices);
+            console.log(this.intervalBtnState);
             return;
         }
 
@@ -171,22 +174,23 @@ export class MusicComponent {
     }
 
     handleShowCircleByPerfect5ths() {
-        this.intervalBtnState.circleBy5ths = !this.intervalBtnState.circleBy5ths;
+        this.showingCircleOf5ths = !this.showingCircleOf5ths;
+
+        if (!this.showingCircleOf5ths) {
+            this.intializeKeyPickerChart();
+            this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+            return;
+        }
 
         // grab new data set
         this.keyPickerVisual.data = this.googleChartService.getKeyDataSet('circleOf5ths');
 
         // grab new colors
-
-
         const bgColors: string[] = [];
         this.keyPickerVisual.data.forEach(note => {
-            console.log(note);
-            let y = note[0].toString();
-            console.log(y);
-            const x = this.musicKeyService.getColor(y);
-            console.log(x);
-            bgColors.push(x);
+            const noteKey = note[0].toString();
+            const color = this.musicKeyService.getColor(noteKey);
+            bgColors.push(color);
         });
 
         // set options
@@ -195,6 +199,19 @@ export class MusicComponent {
 
         this.keyPickerVisual.googleChartOptions = optionsCopy;
         console.log(this.keyPickerVisual.googleChartOptions);
+        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+    }
+
+    intializeKeyPickerChart() {
+        this.keyPickerVisual.type = 'PieChart';
+        this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+    }
+
+    intializeKeyVisualChart() {
+        this.musicKeyVisual.type = 'PieChart';
+        this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;;
     }
 
     setDefaultIntervalButtonState(intervalType= 'major') {
@@ -263,5 +280,4 @@ export class IntervalState {
     showing6th: boolean;
     showing7th: boolean;
     showingMajorKey: boolean;
-    circleBy5ths?: boolean
 }

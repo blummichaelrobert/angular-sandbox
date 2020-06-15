@@ -21,6 +21,21 @@ export class GoogleChartService {
         ['F', 8.33]
     ];
 
+    circleOf5thRowMap: Map<number, number> = new Map<number, number>([
+        [0, 3],
+        [1, 10],
+        [2, 5],
+        [3, 0],
+        [4, 7],
+        [5, 2],
+        [6, 9],
+        [7, 4],
+        [8, 11],
+        [9, 6],
+        [10, 1],
+        [11, 8]
+    ]);
+
     KeyPickerDataSet = [
         ['A', 8.33],
         ['A#', 8.33],
@@ -143,6 +158,10 @@ export class GoogleChartService {
         });
 
         return dataSet;
+    }
+
+    getCircleOf5thsMappedNumber(selection: number): number {
+        return this.circleOf5thRowMap.get(selection);
     }
 
     getPieChart(): GooglePieChart {
