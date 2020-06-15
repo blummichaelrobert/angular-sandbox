@@ -6,6 +6,21 @@ export class GoogleChartService {
 
     pieChart: GooglePieChart;
 
+    cirleOfFifthsDataSet = [
+        ['C', 8.33],
+        ['G', 8.33],
+        ['D', 8.33],
+        ['A', 8.33],
+        ['E', 8.33],
+        ['B', 8.33],
+        ['F#', 8.33],
+        ['C#', 8.33],
+        ['G#', 8.33],
+        ['D#', 8.33],
+        ['A#', 8.33],
+        ['F', 8.33]
+    ];
+
     KeyPickerDataSet = [
         ['A', 8.33],
         ['A#', 8.33],
@@ -143,6 +158,12 @@ export class GoogleChartService {
             this.pieChart.data = this.minorKeyDataSet;
             return this.pieChart.data;
         }
+
+        if (keyType === 'circleOf5ths') {
+            this.pieChart.data = this.cirleOfFifthsDataSet;
+            return this.pieChart.data;
+        }
+
         this.pieChart.data = this.majorKeyDataSet;
         return this.pieChart.data;
     }

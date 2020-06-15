@@ -170,6 +170,33 @@ export class MusicComponent {
         this.updateKeyVisualizationColors(this.musicKeyService.minorKeyOmissionIndices);
     }
 
+    handleShowCircleByPerfect5ths() {
+        this.intervalBtnState.circleBy5ths = !this.intervalBtnState.circleBy5ths;
+
+        // grab new data set
+        this.keyPickerVisual.data = this.googleChartService.getKeyDataSet('circleOf5ths');
+
+        // grab new colors
+
+
+        const bgColors: string[] = [];
+        this.keyPickerVisual.data.forEach(note => {
+            console.log(note);
+            let y = note[0].toString();
+            console.log(y);
+            const x = this.musicKeyService.getColor(y);
+            console.log(x);
+            bgColors.push(x);
+        });
+
+        // set options
+        const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
+        optionsCopy.colors = bgColors;
+
+        this.keyPickerVisual.googleChartOptions = optionsCopy;
+        console.log(this.keyPickerVisual.googleChartOptions);
+    }
+
     setDefaultIntervalButtonState(intervalType= 'major') {
 
         if (intervalType !== 'major') {
@@ -236,4 +263,5 @@ export class IntervalState {
     showing6th: boolean;
     showing7th: boolean;
     showingMajorKey: boolean;
+    circleBy5ths?: boolean
 }
