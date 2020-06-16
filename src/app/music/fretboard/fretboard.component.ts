@@ -13,6 +13,8 @@ import { CommonService } from '../../shared/services/common.service';
 export class FretboardComponent {
     @Input() musicKey: MusicKey;
 
+    bgColors: MusicKey;
+
     RootColor = '';
     Major2ndColor = '';
     Major3rdColor = '';
@@ -25,7 +27,20 @@ export class FretboardComponent {
                 private musicKeyService: MusicKeyService) { }
 
     ngOnInit() {
-
+        this.bgColors = {
+            Root: '',
+            minor2nd: '',
+            Major2nd: '',
+            minor3rd: '',
+            Major3rd: '',
+            Perfect4th: '',
+            diminished5th: '',
+            Perfect5th: '',
+            minor6th: '',
+            Major6th: '',
+            minor7th: '',
+            Major7th: ''
+        };
     }
 
     ngOnChanges(changes: SimpleChange) {
