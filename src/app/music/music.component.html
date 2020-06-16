@@ -124,13 +124,17 @@
         </div>         
     </div>
     <div class="col-xs-4">
-        <div class="panel panel-default">
-            <chord-progression
-                               [musicKey]="musicKey"
+        <div style="height: 32%"
+             class="panel panel-default">
+            <p>key info?</p>
+        </div>
+        <div style="height: 68%"
+             class="panel panel-default">
+            <chord-progression [musicKey]="musicKey"
                                [showingMajorKey]="intervalBtnState.showingMajorKey"></chord-progression>
         </div>
     </div>
 </div>
 
-<fretboard></fretboard>
+<fretboard [musicKey]="musicKey"></fretboard>
 

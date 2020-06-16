@@ -97,7 +97,6 @@ export class MusicComponent {
             this.setDefaultIntervalButtonState('minor');
             this.musicKeyService.resetOmissions('minor');
             this.updateKeyVisualizationColors(this.musicKeyService.minorKeyOmissionIndices);
-            console.log(this.intervalBtnState);
             return;
         }
 
