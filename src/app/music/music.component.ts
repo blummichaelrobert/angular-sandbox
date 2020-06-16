@@ -4,12 +4,14 @@ import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
 import { GooglePieChart, GooglePieChartOptions } from '../shared/models/google-pie-chart.model';
 import { MusicKey } from './music.models';
+import { CommonService } from '../shared/services/common.service';
 
 @Component({
     selector: 'music',
     templateUrl: './music.component.html',
     styleUrls: ['./music.component.css'],
     providers: [
+        CommonService,
         GoogleChartService,
         MusicKeyService
     ]
@@ -26,6 +28,7 @@ export class MusicComponent {
     musicKey: MusicKey = new MusicKey();
 
     constructor(
+        private commonService: CommonService,
         private googleChartService: GoogleChartService,
         private musicKeyService: MusicKeyService       
     ) { }
@@ -45,14 +48,9 @@ export class MusicComponent {
         console.log(changes);
     }
 
-    copyObject(source: object): object {
-        const copy = { ...source };
-        return copy;
-    }
-
     getCurrentBackgroundColors(): string[] {
 
-        const musicKeyCopy = this.copyObject(this.musicKeyService.musicKey);
+        const musicKeyCopy = this.commonService.copyObject(this.musicKeyService.musicKey);
 
         const backgroundColors: string[] = [];
 
@@ -157,7 +155,7 @@ export class MusicComponent {
         });
 
         // set options
-        const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = bgColors;
         this.keyPickerVisual.googleChartOptions = optionsCopy;
 
@@ -222,7 +220,7 @@ export class MusicComponent {
 
         this.whiteOutKeyPositions(indices);
 
-        const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = this.keyVisualBackgroundColors;
 
         this.musicKeyVisual.googleChartOptions = optionsCopy;
