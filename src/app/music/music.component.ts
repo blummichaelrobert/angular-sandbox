@@ -49,7 +49,7 @@ export class MusicComponent {
 
     getCurrentBackgroundColors(): string[] {
 
-        const musicKeyCopy = this.commonService.copyObject(this.musicKeyService.musicKey);
+        const musicKeyCopy = this.commonService.copyObject(this.musicKeyService.getMusicKey());
 
         const backgroundColors: string[] = [];
 

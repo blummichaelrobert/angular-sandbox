@@ -5,14 +5,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class MusicKeyService {
-
-    //private readonly musicKeySubject: BehaviorSubject<MusicKey> = new BehaviorSubject<MusicKey>();
-    //musicKey$: Observable<MusicKey> = this.musicKeySubject.asObservable();
+export class MusicKeyService {;
 
     musicKey$ = new BehaviorSubject<MusicKey>(null);
-
-    
 
     chromaticMap: Map<string, string[]> = new Map([
         ['0', ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']],
@@ -63,8 +58,6 @@ export class MusicKeyService {
 
     minorKeyOmissionIndices: number[] = [1, 4, 6, 9, 11];
 
-    musicKey: MusicKey;
-
     addIndexToMajorOmissions(index: number) {
         this.majorKeyOmissionIndices.push(index);
     }
@@ -77,11 +70,7 @@ export class MusicKeyService {
         return this.colorMap.get(key);
     }
 
-    getMusicKey(): MusicKey {
-        return this.musicKey;
-    }
-
-    getMusicKey$(): MusicKey { return this.musicKey$.getValue(); }
+    getMusicKey(): MusicKey { return this.musicKey$.getValue(); }
 
     removeIndexFromMajorOmissions(filter: number) {
         this.majorKeyOmissionIndices = this.majorKeyOmissionIndices.filter(index => index !== filter);
@@ -99,7 +88,8 @@ export class MusicKeyService {
     }
 
     setMusicKeyProps(rawMusicKey: string[]) {
-        this.musicKey = {
+
+       const musicKey: MusicKey = {
             Root: rawMusicKey[0],
             minor2nd: rawMusicKey[1],
             Major2nd: rawMusicKey[2],
@@ -114,7 +104,7 @@ export class MusicKeyService {
             Major7th: rawMusicKey[11]
         };
 
-        this.musicKey$.next(this.musicKey);
+        this.musicKey$.next(musicKey);
     }
 
     resetOmissions(type = 'major') {
