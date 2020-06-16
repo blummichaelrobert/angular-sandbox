@@ -130,7 +130,7 @@
         </div>
         <div style="height: 68%"
              class="panel panel-default">
-            <chord-progression [musicKey]="musicKey"
+            <chord-progression [musicKey]="musicKeyService.musicKey$ | async"
                                [showingMajorKey]="intervalBtnState.showingMajorKey"></chord-progression>
         </div>
     </div>

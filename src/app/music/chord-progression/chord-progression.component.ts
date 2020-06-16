@@ -1,18 +1,15 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GoogleChartService } from '../../shared/services/google-chart.service';
 import { MusicKeyService } from '../../shared/services/music-key.service';
-import { GooglePieChart, GooglePieChartOptions } from '../../shared/models/google-pie-chart.model';
+import {  GooglePieChartOptions } from '../../shared/models/google-pie-chart.model';
 import { MusicKey } from '../music.models';
-import { interval } from 'rxjs';
+
 
 @Component({
     selector: 'chord-progression',
     templateUrl: './chord-progression.component.html',
     styleUrls: ['./chord-progression.component.css'],
-    providers: [
-        GoogleChartService,
-        MusicKeyService
-    ]
+    providers: [ GoogleChartService]
 })
 
 export class ChordProgressionComponent {

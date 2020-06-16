@@ -12,7 +12,6 @@ import { CommonService } from '../../shared/services/common.service';
 
 export class FretboardComponent {
     @Input() musicKey: MusicKey;
-    @Input() testInput: MusicKey;
 
     bgColors: MusicKey;
 
