@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
 import { MusicKey } from '../../music/music.models';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class MusicKeyService {
+
+    //private readonly musicKeySubject: BehaviorSubject<MusicKey> = new BehaviorSubject<MusicKey>();
+    //musicKey$: Observable<MusicKey> = this.musicKeySubject.asObservable();
+
+    musicKey$ = new BehaviorSubject<MusicKey>(null);
+
+    
 
     chromaticMap: Map<string, string[]> = new Map([
         ['0', ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']],
@@ -71,6 +81,8 @@ export class MusicKeyService {
         return this.musicKey;
     }
 
+    getMusicKey$(): MusicKey { return this.musicKey$.getValue(); }
+
     removeIndexFromMajorOmissions(filter: number) {
         this.majorKeyOmissionIndices = this.majorKeyOmissionIndices.filter(index => index !== filter);
     }
@@ -101,6 +113,8 @@ export class MusicKeyService {
             minor7th: rawMusicKey[10],
             Major7th: rawMusicKey[11]
         };
+
+        this.musicKey$.next(this.musicKey);
     }
 
     resetOmissions(type = 'major') {

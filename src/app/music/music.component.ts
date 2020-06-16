@@ -12,8 +12,7 @@ import { CommonService } from '../shared/services/common.service';
     styleUrls: ['./music.component.css'],
     providers: [
         CommonService,
-        GoogleChartService,
-        MusicKeyService
+        GoogleChartService
     ]
 })
 
@@ -30,7 +29,7 @@ export class MusicComponent {
     constructor(
         private commonService: CommonService,
         private googleChartService: GoogleChartService,
-        private musicKeyService: MusicKeyService       
+        public  musicKeyService: MusicKeyService       
     ) { }
 
     ngOnInit() {
