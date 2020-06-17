@@ -35,7 +35,8 @@
             <google-chart #scaleChart
                           [type]="musicKeyVisual.type"
                           [data]="musicKeyVisual.data"
-                          [options]="musicKeyVisual.googleChartOptions">
+                          [options]="musicKeyVisual.googleChartOptions"
+                          (select)="handleIntervalSelectedFromChart($event)">
             </google-chart>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <button type="button"

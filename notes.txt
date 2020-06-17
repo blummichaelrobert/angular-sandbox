@@ -1,2 +1,14 @@
 
 shallow vs deep copy: https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
+
+icons show/hide based on user interaction with key visual.
+
+icons bounce to show triads of different types, based on user selections
+
+chord progression creator
+
+scales dropdown next to fretboard?
+
+chord drawer => update all visuals
+
+fretboard flavors: major and minor. => create separate comonent for minor fretboard instead of all logic on one.

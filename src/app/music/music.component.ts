@@ -26,6 +26,20 @@ export class MusicComponent {
     musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
     musicKey: MusicKey = new MusicKey();
 
+    // is this the best place for this?
+    intervalMap: Map<number, string> = new Map([
+        [0, 'showingRoot'],
+        [2, 'showing2nd'],
+        [3, 'showing3rd'],
+        [4, 'showing3rd'],
+        [5, 'showing4th'],
+        [7, 'showing5th'],
+        [8, 'showing6th'],
+        [9, 'showing6th'],
+        [10, 'showing7th'],
+        [11, 'showing7th']
+    ]);
+
     constructor(
         private commonService: CommonService,
         private googleChartService: GoogleChartService,
@@ -45,6 +59,40 @@ export class MusicComponent {
 
     ngOnChanges(changes: SimpleChange) {
         console.log(changes);
+    }
+
+    determineViableSelection(selection: number): boolean {
+        if (selection === 1 || selection === 6)
+            return false;
+
+        if (this.intervalBtnState.showingMajorKey) {
+            if (selection === 3 || selection === 8 || selection === 10)
+                return false;
+        }
+
+        if (!this.intervalBtnState.showingMajorKey) {
+            if (selection === 4 || selection === 9 || selection === 11) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    getInterval(interval: number) {
+        return this.intervalMap.get(interval);
+    }
+
+    handleIntervalSelectedFromChart(event: { selection: [{ column: number; row: number }] }) {
+        const selection = event.selection[0].row;
+
+        if (this.determineViableSelection(selection)) {
+            const interval = this.getInterval(selection);
+
+            this.handleIntervalClick(interval, selection);
+        } else { // user clicked an empty spot on visual.
+            return;
+        }
     }
 
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
@@ -199,6 +247,9 @@ export class MusicComponent {
         this.intervalBtnState[property] = !this.intervalBtnState[property];;
     }
 
+    // todo: there is a dependency here:
+    // keyVisualBackgrounds not really needed for class but is needed for whiteOutKeyPostions method.
+    // refactor out dependency
     updateKeyVisualizationColors(indices: number[]) {
         this.keyVisualBackgroundColors = this.musicKeyService.getCurrentBackgroundColors();
 
