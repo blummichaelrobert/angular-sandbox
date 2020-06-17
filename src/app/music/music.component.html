@@ -137,5 +137,10 @@
     </div>
 </div>
 
-<fretboard [musicKey]="musicKeyService.musicKey$ | async"></fretboard>
+
+<fretboard *ngIf="intervalBtnState.showingMajorKey"
+           [musicKey]="musicKeyService.musicKey$ | async"></fretboard>
+
+<minor-fretboard *ngIf="!intervalBtnState.showingMajorKey"
+                 [musicKey]="musicKeyService.musicKey$ | async"></minor-fretboard>
 

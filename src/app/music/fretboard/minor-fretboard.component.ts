@@ -1,16 +1,17 @@
 import { Component, Input, SimpleChange } from '@angular/core';
+import { CommonService } from '../../shared/services/common.service';
 import { MusicKey } from '../music.models';
 import { MusicKeyService } from '../../shared/services/music-key.service';
-import { CommonService } from '../../shared/services/common.service';
+
 
 @Component({
-    selector: 'fretboard',
-    templateUrl: './fretboard.component.html',
+    selector: 'minor-fretboard',
+    templateUrl: './minor-fretboard.component.html',
     styleUrls: ['./fretboard.component.css'],
-    providers: [CommonService]
+    providers: [MusicKeyService]
 })
 
-export class FretboardComponent {
+export class MinorFretboarComponent {
     @Input() musicKey: MusicKey;
 
     bgColors: MusicKey;
