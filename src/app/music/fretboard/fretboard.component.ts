@@ -1,13 +1,12 @@
 import { Component, Input, SimpleChange } from '@angular/core';
 import { MusicKey } from '../music.models';
-import { MusicKeyService } from '../../shared/services/music-key.service';
-import { CommonService } from '../../shared/services/common.service';
+import { FretboardService } from './fretboard.service';
 
 @Component({
     selector: 'fretboard',
     templateUrl: './fretboard.component.html',
     styleUrls: ['./fretboard.component.css'],
-    providers: [CommonService]
+    providers: [FretboardService]
 })
 
 export class FretboardComponent {
@@ -15,27 +14,12 @@ export class FretboardComponent {
 
     bgColors: MusicKey;
 
-    constructor(private commonService: CommonService,
-                private musicKeyService: MusicKeyService) { }
+    constructor(private fretboardService: FretboardService) { }
 
     ngOnInit() {
     }
 
     ngOnChanges(changes: SimpleChange) {
-        this.updateIconColors(changes['musicKey']['currentValue']);
-    }
-
-    updateIconColors(musicKey: MusicKey) {
-        const musicKeyCopy = this.commonService.copyObject(musicKey);
-
-        const backgroundColors: string[] = [];
-
-        // iterate over enumerable properties of object
-        for (const interval in musicKeyCopy) {
-            musicKeyCopy[interval] = this.musicKeyService.getColor(musicKeyCopy[interval]);
-            backgroundColors.push(musicKeyCopy[interval]);
-        }
-
-        this.bgColors = this.musicKeyService.setMusicKeyProps(backgroundColors);
+        this.bgColors = this.fretboardService.updateIconColors(changes['musicKey']['currentValue']);
     }
 }
