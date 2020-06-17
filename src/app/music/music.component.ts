@@ -1,17 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChange } from '@angular/core';
 
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
-import { MusicKey } from './music.models';
 import { GooglePieChart, GooglePieChartOptions } from '../shared/models/google-pie-chart.model';
+import { MusicKey } from './music.models';
+import { CommonService } from '../shared/services/common.service';
 
 @Component({
     selector: 'music',
     templateUrl: './music.component.html',
     styleUrls: ['./music.component.css'],
     providers: [
-        GoogleChartService,
-        MusicKeyService
+        CommonService,
+        GoogleChartService
     ]
 })
 
@@ -19,42 +20,36 @@ export class MusicComponent {
 
     keyVisualBackgroundColors: string[] = [];
     intervalBtnState: IntervalState;
+    showingCircleOf5ths = false;
 
-    keyPickerVisual: GooglePieChart;
-    musicKeyVisual: GooglePieChart;
-
-    musicKey: MusicKey;
+    keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
+    musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
+    musicKey: MusicKey = new MusicKey();
 
     constructor(
+        private commonService: CommonService,
         private googleChartService: GoogleChartService,
-        private musicKeyService: MusicKeyService       
+        public  musicKeyService: MusicKeyService       
     ) { }
 
     ngOnInit() {
-
+        
         this.setDefaultIntervalButtonState();
 
-        this.keyPickerVisual = this.googleChartService.getNewPieChart();
-        this.keyPickerVisual.type = 'PieChart';
-        this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
-        this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+        this.intializeKeyPickerChart();
 
-        this.musicKeyVisual = this.googleChartService.getNewPieChart();
-        this.musicKeyVisual.type = 'PieChart';
-        this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
-        this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;
+        this.intializeKeyVisualChart();
               
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
     }
 
-    copyObject(source: object): object {
-        const copy = { ...source };
-        return copy;
+    ngOnChanges(changes: SimpleChange) {
+        console.log(changes);
     }
 
     getCurrentBackgroundColors(): string[] {
 
-        const musicKeyCopy = this.copyObject(this.musicKey);
+        const musicKeyCopy = this.commonService.copyObject(this.musicKeyService.getMusicKey());
 
         const backgroundColors: string[] = [];
 
@@ -69,9 +64,16 @@ export class MusicComponent {
 
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
 
-        const selection = event.selection[0].row.toString();
+        let selection = event.selection[0].row;
 
-        this.musicKey = this.musicKeyService.getMusicKey(selection);
+        if (this.showingCircleOf5ths) {
+            selection = this.googleChartService.getCircleOf5thsMappedNumber(selection);
+        }
+
+        this.musicKeyService.setMusicKey(selection.toString());
+
+        // update input for chord progression => 
+        this.musicKey = this.musicKeyService.getMusicKey();
 
         if (!this.intervalBtnState.showingMajorKey) {
             this.musicKeyVisual.data = this.googleChartService.getKeyDataSet('minor');
@@ -98,42 +100,6 @@ export class MusicComponent {
         this.setDefaultIntervalButtonState();
         this.musicKeyService.resetOmissions();
         this.updateKeyVisualizationColors(this.musicKeyService.majorKeyOmissionIndices);
-    }
-
-    handleSecondIntervalClick() {
-        this.handleIntervalClick('showing2nd', 2);
-    }
-
-    handleMajorThirdIntervalClick() {
-        this.handleIntervalClick('showing3rd', 4);
-    }
-
-    handleMinorThirdIntervalClick() {
-        this.handleIntervalClick('showing3rd', 3);
-    }
-
-    handleFourthIntervalClick() {
-        this.handleIntervalClick('showing4th', 5);
-    }
-
-    handleFifthIntervalClick() {
-        this.handleIntervalClick('showing5th', 7);
-    }
-
-    handleMajorSixthIntervalClick() {
-        this.handleIntervalClick('showing6th', 9);
-    }
-
-    handleMinorSixthIntervalClick() {
-        this.handleIntervalClick('showing6th', 8);
-    }
-
-    handleMajorSeventhIntervalClick() {
-        this.handleIntervalClick('showing7th', 11);
-    }
-
-    handleMinorSeventhIntervalClick() {
-        this.handleIntervalClick('showing7th', 10);
     }
 
     handleIntervalClick(interval: string, index: number) {
@@ -164,6 +130,47 @@ export class MusicComponent {
             this.musicKeyService.addIndexToMinorOmissions(index);
 
         this.updateKeyVisualizationColors(this.musicKeyService.minorKeyOmissionIndices);
+    }
+
+    handleShowCircleByPerfect5ths() {
+        // toggle property
+        this.showingCircleOf5ths = !this.showingCircleOf5ths;
+
+        if (!this.showingCircleOf5ths) {
+            this.intializeKeyPickerChart();
+            this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+            return;
+        }
+
+        // grab new data set
+        this.keyPickerVisual.data = this.googleChartService.getKeyDataSet('circleOf5ths');
+
+        // grab new colors
+        const bgColors: string[] = [];
+        this.keyPickerVisual.data.forEach(note => {
+            const noteKey = note[0].toString();
+            const color = this.musicKeyService.getColor(noteKey);
+            bgColors.push(color);
+        });
+
+        // set options
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
+        optionsCopy.colors = bgColors;
+        this.keyPickerVisual.googleChartOptions = optionsCopy;
+
+        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+    }
+
+    intializeKeyPickerChart() {
+        this.keyPickerVisual.type = 'PieChart';
+        this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+    }
+
+    intializeKeyVisualChart() {
+        this.musicKeyVisual.type = 'PieChart';
+        this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;;
     }
 
     setDefaultIntervalButtonState(intervalType= 'major') {
@@ -212,7 +219,7 @@ export class MusicComponent {
 
         this.whiteOutKeyPositions(indices);
 
-        const optionsCopy: GooglePieChartOptions = this.copyObject(this.googleChartService.keyChartOptions);
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
         optionsCopy.colors = this.keyVisualBackgroundColors;
 
         this.musicKeyVisual.googleChartOptions = optionsCopy;

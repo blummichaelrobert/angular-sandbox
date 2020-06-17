@@ -1,0 +1,120 @@
+<h3><i class="fab fa-draft2digital"></i>Chord Progressions:</h3>
+<google-chart #scaleChart
+              [type]="type"
+              [data]="data"
+              [options]="chartOptions">
+</google-chart>
+<div class="row">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th'])">
+            I IV V
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major6th', 'Perfect4th', 'Perfect5th'])">
+            I vi IV V
+        </button>
+        <button type="button"
+                class="btn btn-secondary float-right"
+                (click)="handleProgressionSelected(['Major2nd', 'Perfect5th', 'Root'])">
+            ii V I
+        </button>
+    </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor6th', 'minor7th'])">
+            i VI VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'minor7th'])">
+            i iv VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary float-right"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Perfect5th'])">
+            i iv v
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major6th', 'Major2nd', 'Perfect5th'])">
+            I vi ii V
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect5th', 'Major6th', 'Perfect4th'])">
+            I V vi IV
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Major6th', 'Perfect5th'])">
+            I IV vi V
+        </button>
+    </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor6th', 'minor3rd', 'minor7th'])">
+            i VI III VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Major2nd', 'Perfect5th', 'Root'])">
+            ii v i
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'minor6th'])">
+            i iv vi
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div *ngIf="showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Major3rd', 'Perfect4th'])">
+            I iii IV
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Root', 'Perfect5th'])">
+            I IV I V
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'Perfect4th', 'Major2nd', 'Perfect5th'])">
+            I IV ii V
+        </button>
+    </div>
+    <div *ngIf="!showingMajorKey"
+         class="col-xs-12">
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['minor6th', 'minor7th', 'Root'])">
+            VI VII i
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor7th', 'minor6th', 'minor7th'])">
+            i VII VI VII
+        </button>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="handleProgressionSelected(['Root', 'minor7th', 'minor6th'])">
+            i VIIb7 VIb7
+        </button>
+    </div>
+</div>

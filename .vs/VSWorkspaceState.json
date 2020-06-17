@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\music",
+    "\\src\\app\\music\\chord-progression",
+    "\\src\\app\\shared",
+    "\\src\\app\\shared\\components",
+    "\\src\\app\\shared\\models",
+    "\\src\\app\\shared\\services"
+  ],
+  "SelectedNode": "\\src\\app\\music\\chord-progression\\chord-progression.component.html",
+  "PreviewInSolutionExplorer": false
+}

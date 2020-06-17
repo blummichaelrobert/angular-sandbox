@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MusicKey } from '../../music/music.models';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
-export class MusicKeyService {
+@Injectable({
+    providedIn: 'root',
+})
+export class MusicKeyService {;
+
+    musicKey$ = new BehaviorSubject<MusicKey>(null);
 
     chromaticMap: Map<string, string[]> = new Map([
         ['0', ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']],
@@ -53,8 +58,6 @@ export class MusicKeyService {
 
     minorKeyOmissionIndices: number[] = [1, 4, 6, 9, 11];
 
-    musicKey: MusicKey;
-
     addIndexToMajorOmissions(index: number) {
         this.majorKeyOmissionIndices.push(index);
     }
@@ -63,35 +66,11 @@ export class MusicKeyService {
         this.minorKeyOmissionIndices.push(index);
     }
 
-    createMusicKey(rawMusicKey: string[]) {
-    this.musicKey = {
-        Root: rawMusicKey[0],
-        minor2nd: rawMusicKey[1],
-        Major2nd: rawMusicKey[2],
-        minor3rd: rawMusicKey[3],
-        Major3rd: rawMusicKey[4],
-        Perfect4th: rawMusicKey[5],
-        diminished5th: rawMusicKey[6],
-        Perfect5th: rawMusicKey[7],
-        minor6th: rawMusicKey[8],
-        Major6th: rawMusicKey[9],
-        minor7th: rawMusicKey[10],
-        Major7th: rawMusicKey[11]
-    };
-    }
-
-    getMusicKey(key: string): MusicKey {
-
-        const rawMusicKey: string[] = this.chromaticMap.get(key);
-
-        this.createMusicKey(rawMusicKey);
-
-        return this.musicKey;
-    }
-
     getColor(key: string): string {
         return this.colorMap.get(key);
     }
+
+    getMusicKey(): MusicKey { return this.musicKey$.getValue(); }
 
     removeIndexFromMajorOmissions(filter: number) {
         this.majorKeyOmissionIndices = this.majorKeyOmissionIndices.filter(index => index !== filter);
@@ -99,6 +78,35 @@ export class MusicKeyService {
 
     removeIndexFromMinorOmissions(filter: number) {
         this.minorKeyOmissionIndices = this.minorKeyOmissionIndices.filter(index => index !== filter);
+    }
+
+    setMusicKey(selection: string) {
+
+        const rawMusicKey: string[] = this.chromaticMap.get(selection);
+
+        this.nextMusicKey(rawMusicKey);
+    }
+
+    setMusicKeyProps(rawMusicKey: string[]): MusicKey {
+        return {
+            Root: rawMusicKey[0],
+            minor2nd: rawMusicKey[1],
+            Major2nd: rawMusicKey[2],
+            minor3rd: rawMusicKey[3],
+            Major3rd: rawMusicKey[4],
+            Perfect4th: rawMusicKey[5],
+            diminished5th: rawMusicKey[6],
+            Perfect5th: rawMusicKey[7],
+            minor6th: rawMusicKey[8],
+            Major6th: rawMusicKey[9],
+            minor7th: rawMusicKey[10],
+            Major7th: rawMusicKey[11]
+        };
+    }
+
+    nextMusicKey(rawMusicKey: string[]) {
+
+        this.musicKey$.next(this.setMusicKeyProps(rawMusicKey));
     }
 
     resetOmissions(type = 'major') {
