@@ -84,12 +84,11 @@ export class MusicKeyService {;
 
         const rawMusicKey: string[] = this.chromaticMap.get(selection);
 
-        this.setMusicKeyProps(rawMusicKey);
+        this.nextMusicKey(rawMusicKey);
     }
 
-    setMusicKeyProps(rawMusicKey: string[]) {
-
-       const musicKey: MusicKey = {
+    setMusicKeyProps(rawMusicKey: string[]): MusicKey {
+        return {
             Root: rawMusicKey[0],
             minor2nd: rawMusicKey[1],
             Major2nd: rawMusicKey[2],
@@ -103,8 +102,11 @@ export class MusicKeyService {;
             minor7th: rawMusicKey[10],
             Major7th: rawMusicKey[11]
         };
+    }
 
-        this.musicKey$.next(musicKey);
+    nextMusicKey(rawMusicKey: string[]) {
+
+        this.musicKey$.next(this.setMusicKeyProps(rawMusicKey));
     }
 
     resetOmissions(type = 'major') {

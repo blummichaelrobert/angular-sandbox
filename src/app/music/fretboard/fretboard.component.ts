@@ -27,20 +27,7 @@ export class FretboardComponent {
                 private musicKeyService: MusicKeyService) { }
 
     ngOnInit() {
-        this.bgColors = {
-            Root: '',
-            minor2nd: '',
-            Major2nd: '',
-            minor3rd: '',
-            Major3rd: '',
-            Perfect4th: '',
-            diminished5th: '',
-            Perfect5th: '',
-            minor6th: '',
-            Major6th: '',
-            minor7th: '',
-            Major7th: ''
-        };
+
     }
 
     ngOnChanges(changes: SimpleChange) {
@@ -58,12 +45,6 @@ export class FretboardComponent {
             backgroundColors.push(musicKeyCopy[interval]);
         }
 
-        this.RootColor = backgroundColors[0];
-        this.Major2ndColor = backgroundColors[2];
-        this.Major3rdColor = backgroundColors[4];
-        this.Perfect4thColor = backgroundColors[5];
-        this.Perfect5thColor = backgroundColors[7];
-        this.Major6thColor = backgroundColors[9];
-        this.Major7thColor = backgroundColors[11];
+        this.bgColors = this.musicKeyService.setMusicKeyProps(backgroundColors);
     }
 }
