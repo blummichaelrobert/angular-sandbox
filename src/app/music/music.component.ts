@@ -47,21 +47,6 @@ export class MusicComponent {
         console.log(changes);
     }
 
-    getCurrentBackgroundColors(): string[] {
-
-        const musicKeyCopy = this.commonService.copyObject(this.musicKeyService.getMusicKey());
-
-        const backgroundColors: string[] = [];
-
-        // iterate over enumerable properties of object
-        for (const interval in musicKeyCopy) {
-            musicKeyCopy[interval] = this.musicKeyService.getColor(musicKeyCopy[interval]);
-            backgroundColors.push(musicKeyCopy[interval]);
-        }
-
-        return backgroundColors;
-    }
-
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
 
         let selection = event.selection[0].row;
@@ -215,7 +200,7 @@ export class MusicComponent {
     }
 
     updateKeyVisualizationColors(indices: number[]) {
-        this.keyVisualBackgroundColors = this.getCurrentBackgroundColors();
+        this.keyVisualBackgroundColors = this.musicKeyService.getCurrentBackgroundColors();
 
         this.whiteOutKeyPositions(indices);
 

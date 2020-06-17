@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { MusicKey } from '../../music/music.models';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { CommonService } from './common.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class MusicKeyService {;
+export class MusicKeyService {
+
+    constructor(private commonService: CommonService) { }
 
     musicKey$ = new BehaviorSubject<MusicKey>(null);
 
@@ -66,11 +69,31 @@ export class MusicKeyService {;
         this.minorKeyOmissionIndices.push(index);
     }
 
+    getCurrentBackgroundColors(): string[] {
+
+        const musicKeyCopy = this.commonService.copyObject(this.getMusicKey());
+
+        const backgroundColors: string[] = [];
+
+        // iterate over enumerable properties of object
+        for (const interval in musicKeyCopy) {
+            musicKeyCopy[interval] = this.getColor(musicKeyCopy[interval]);
+            backgroundColors.push(musicKeyCopy[interval]);
+        }
+
+        return backgroundColors;
+    }
+
     getColor(key: string): string {
         return this.colorMap.get(key);
     }
 
     getMusicKey(): MusicKey { return this.musicKey$.getValue(); }
+
+    nextMusicKey(rawMusicKey: string[]) {
+
+        this.musicKey$.next(this.setMusicKeyProps(rawMusicKey));
+    }
 
     removeIndexFromMajorOmissions(filter: number) {
         this.majorKeyOmissionIndices = this.majorKeyOmissionIndices.filter(index => index !== filter);
@@ -102,11 +125,6 @@ export class MusicKeyService {;
             minor7th: rawMusicKey[10],
             Major7th: rawMusicKey[11]
         };
-    }
-
-    nextMusicKey(rawMusicKey: string[]) {
-
-        this.musicKey$.next(this.setMusicKeyProps(rawMusicKey));
     }
 
     resetOmissions(type = 'major') {

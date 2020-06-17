@@ -6,6 +6,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
 import { MusicComponent } from './music.component';
 import { ChordProgressionComponent } from './chord-progression/chord-progression.component';
 import { FretboardComponent } from './fretboard/fretboard.component';
+import { CommonService } from '../shared/services/common.service';
 
 const routes: Routes = [{ path: '', component: MusicComponent }];
 
@@ -19,7 +20,8 @@ const routes: Routes = [{ path: '', component: MusicComponent }];
         ChordProgressionComponent,
         FretboardComponent,
         MusicComponent
-    ]
+    ],
+    providers: [CommonService]
 })
 
 export class MusicModule { }
