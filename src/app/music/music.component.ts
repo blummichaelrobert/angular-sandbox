@@ -1,4 +1,4 @@
-import { Component, SimpleChange } from '@angular/core';
+import { Component, SimpleChange, HostListener } from '@angular/core';
 
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
@@ -192,6 +192,16 @@ export class MusicComponent {
         this.keyPickerVisual.googleChartOptions = optionsCopy;
 
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        console.log(event.target.innerWidth);
+        if (event.target.innerWidth < 1585) {
+            this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions_sm;
+        } else {
+            this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+        }
     }
 
     intializeKeyPickerChart() {

@@ -15,3 +15,5 @@ scales dropdown next to fretboard? [todo]
 
 chord drawer => update all visuals [todo]
 
+make different height/width options for google charts based on screen width using @HostListener
+
