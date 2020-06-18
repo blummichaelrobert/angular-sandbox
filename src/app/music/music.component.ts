@@ -198,7 +198,7 @@ export class MusicComponent {
     onResize(event) {
         console.log(event.target.innerWidth);
         if (event.target.innerWidth < 1585) {
-            this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions_sm;
+            this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions('keyPicker', 475, 475);
         } else {
             this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
         }

@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { GooglePieChart } from '../models/google-pie-chart.model';
+import { GooglePieChart, GooglePieChartOptions } from '../models/google-pie-chart.model';
+import { CommonService } from './common.service';
 
 @Injectable()
 export class GoogleChartService {
 
-    pieChart: GooglePieChart;
+    constructor(private commonService: CommonService) { }
 
-    cirleOfFifthsDataSet = [
+    pieChart: GooglePieChart;
+    // todo: do I still need all of these still?
+    readonly cirleOfFifthsDataSet = [
         ['C', 8.33],
         ['G', 8.33],
         ['D', 8.33],
@@ -21,7 +24,7 @@ export class GoogleChartService {
         ['F', 8.33]
     ];
 
-    circleOf5thRowMap: Map<number, number> = new Map<number, number>([
+    readonly circleOf5thRowMap: Map<number, number> = new Map<number, number>([
         [0, 3],
         [1, 10],
         [2, 5],
@@ -36,7 +39,7 @@ export class GoogleChartService {
         [11, 8]
     ]);
 
-    KeyPickerDataSet = [
+    readonly KeyPickerDataSet = [
         ['A', 8.33],
         ['A#', 8.33],
         ['B', 8.33],
@@ -51,7 +54,7 @@ export class GoogleChartService {
         ['G#', 8.33]
     ];
 
-    chromaticDataSet = [
+    readonly chromaticDataSet = [
         ['Root', 8.33],
         ['m2', 8.33],
         ['M2', 8.33],
@@ -66,7 +69,7 @@ export class GoogleChartService {
         ['M7', 8.33]
     ];
 
-    majorKeyDataSet = [
+    readonly majorKeyDataSet = [
         ['R*', 8.33],
         ['', 8.33],
         ['M2*', 8.33],
@@ -81,7 +84,7 @@ export class GoogleChartService {
         ['M7', 8.33]
     ];
 
-    minorKeyDataSet = [
+    readonly minorKeyDataSet = [
         ['R*', 8.33],
         ['', 8.33],
         ['M2', 8.33],
@@ -96,7 +99,7 @@ export class GoogleChartService {
         ['', 8.33]
     ];
 
-    keyPickerChartOptions = {
+    readonly keyPickerChartOptions = {
         pieHole: 0.4,
         colors: [
             '#ff0000', '#ff3300', '#ff6500',
@@ -112,23 +115,7 @@ export class GoogleChartService {
         width: 500
     };
 
-    keyPickerChartOptions_sm = {
-        pieHole: 0.4,
-        colors: [
-            '#ff0000', '#ff3300', '#ff6500',
-            '#f9ed03', '#b6f903', '#059c0e',
-            '#04d67b', '#00e6c2', '#0000ff',
-            '#5a01ff', '#ab00ff', '#e6008e'
-        ],
-        legend: { position: 'none' },
-        height: 400,
-        pieSliceText: 'label',
-        pieStartAngle: -15,
-        tooltip: { trigger: 'none' },
-        width: 400
-    };
-
-    chromaticChartOptions = {
+    readonly chromaticChartOptions = {
         pieHole: 0.4,
         colors: [
             '#ff0000', '#ff3300', '#ff6500',
@@ -144,7 +131,7 @@ export class GoogleChartService {
         width: 500
     };
 
-    keyChartOptions = {
+    readonly keyChartOptions = {
         pieHole: 0.4,
         colors: [
             '#ff0000', '#ffffff', '#ff6500',
@@ -205,5 +192,21 @@ export class GoogleChartService {
 
     getNewPieChart(): GooglePieChart {
         return new GooglePieChart();
+    }
+
+    updateChartOptions(chartType: string, height: number, width: number): GooglePieChartOptions {
+
+        let optionsCopy: object;
+        switch (chartType) {
+            case 'keyPicker':
+                optionsCopy = this.commonService.copyObject(this.keyPickerChartOptions);
+                optionsCopy['height'] = height;
+                optionsCopy['width'] = width;
+                return optionsCopy;
+                break;
+            default:
+                return new GooglePieChartOptions();
+        }
+
     }
 }
