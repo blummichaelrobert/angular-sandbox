@@ -2,7 +2,7 @@ import { Component, SimpleChange, HostListener } from '@angular/core';
 
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicKeyService } from '../shared/services/music-key.service';
-import { GooglePieChart, GooglePieChartOptions } from '../shared/models/google-pie-chart.model';
+import { GooglePieChart } from '../shared/models/google-pie-chart.model';
 import { MusicKey } from './music.models';
 import { CommonService } from '../shared/services/common.service';
 
@@ -205,15 +205,16 @@ export class MusicComponent {
     }
 
     intializeKeyPickerChart() {
-        this.keyPickerVisual.type = 'PieChart';
+        this.keyPickerVisual.type = this.googleChartService.PIE_CHART;
         this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
         this.keyPickerVisual.googleChartOptions = this.googleChartService.defaultOptions;
     }
 
     intializeKeyVisualChart() {
-        this.musicKeyVisual.type = 'PieChart';
+        this.musicKeyVisual.type = this.googleChartService.PIE_CHART;
         this.musicKeyVisual.data = this.googleChartService.majorKeyDataSet;
-        this.musicKeyVisual.googleChartOptions = this.googleChartService.keyChartOptions;;
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.defaultOptions;
+        this.updateKeyVisualizationColors(this.musicKeyService.majorKeyOmissionIndices);
     }
 
     setDefaultIntervalButtonState(intervalType= 'major') {
@@ -257,19 +258,17 @@ export class MusicComponent {
         this.intervalBtnState[property] = !this.intervalBtnState[property];;
     }
 
-    // todo: there is a dependency here:
-    // keyVisualBackgrounds not really needed for class but is needed for whiteOutKeyPostions method.
-    // refactor out dependency
     updateKeyVisualizationColors(indices: number[]) {
-        this.keyVisualBackgroundColors = this.musicKeyService.getCurrentBackgroundColors();
 
-        this.whiteOutKeyPositions(indices);
+        let bgColors = this.musicKeyService.getCurrentBackgroundColors();
+        bgColors = this.whiteOutKeyPositions(indices, bgColors);
 
-        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartColors(this.keyVisualBackgroundColors);
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartColors(bgColors);
     }
 
-    whiteOutKeyPositions(indices: number[]) {
-        indices.forEach(index => this.keyVisualBackgroundColors[index] = '#fff');
+    whiteOutKeyPositions(indices: number[], bgColors: string[]): string[] {
+        indices.forEach(index => bgColors[index] = '#fff');
+        return bgColors;
     }
 }
 
