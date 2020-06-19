@@ -18,7 +18,6 @@ import { CommonService } from '../shared/services/common.service';
 
 export class MusicComponent {
 
-    keyVisualBackgroundColors: string[] = [];
     intervalBtnState: IntervalState;
     showingCircleOf5ths = false;
 
@@ -26,7 +25,10 @@ export class MusicComponent {
     musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
     musicKey: MusicKey = new MusicKey();
 
-    // is this the best place for this?
+    // todo: is this the best place for this?
+    currentChartDimension = 600;
+
+    // todo: is this the best place for this?
     intervalMap: Map<number, string> = new Map([
         [0, 'showingRoot'],
         [2, 'showing2nd'],
@@ -54,7 +56,11 @@ export class MusicComponent {
 
         this.intializeKeyVisualChart();
               
-        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
+        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] }); // setting colors here
+
+        const innerWidth = window.innerWidth;
+
+        this.onResize({ target: { innerWidth: innerWidth } }); // resetting colors, setting height width here
     }
 
     ngOnChanges(changes: SimpleChange) {
@@ -187,7 +193,7 @@ export class MusicComponent {
         });
 
         // update => set options
-        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartColors(bgColors);
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
 
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
     }
@@ -195,13 +201,15 @@ export class MusicComponent {
     @HostListener('window:resize', ['$event'])
     onResize(event) {
         console.log(event.target.innerWidth);
-        if (event.target.innerWidth < 1585) {
-            this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartHeightWidth(475, 475);
-            this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartHeightWidth(475, 475);
-        } else {
-            this.intializeKeyPickerChart();
-            this.intializeKeyVisualChart();
-        }
+        const screenWidth = event.target.innerWidth;
+
+        this.currentChartDimension = screenWidth / 3.44;
+
+        let bgColors = this.musicKeyService.getCurrentBackgroundColors();
+        bgColors = this.whiteOutKeyPositions(this.musicKeyService.majorKeyOmissionIndices, bgColors);
+
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
     }
 
     intializeKeyPickerChart() {
@@ -263,7 +271,7 @@ export class MusicComponent {
         let bgColors = this.musicKeyService.getCurrentBackgroundColors();
         bgColors = this.whiteOutKeyPositions(indices, bgColors);
 
-        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartColors(bgColors);
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
     }
 
     whiteOutKeyPositions(indices: number[], bgColors: string[]): string[] {
@@ -281,4 +289,8 @@ export class IntervalState {
     showing6th: boolean;
     showing7th: boolean;
     showingMajorKey: boolean;
+}
+
+export class MockWindowEvent {
+        target: { innerWidth: number };
 }

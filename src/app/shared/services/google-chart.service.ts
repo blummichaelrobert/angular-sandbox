@@ -149,24 +149,16 @@ export class GoogleChartService {
         return new GooglePieChart();
     }
 
-    updateChartColors(newColors: string[]): GooglePieChartOptions {
+    updateChartOptions(dimension: number, colors: string[]): GooglePieChartOptions {
         // get copy of default options
         const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.defaultOptions);
 
         // set new colors
-        optionsCopy.colors = newColors;
-
-        // return options with new colors
-        return optionsCopy;
-    }
-
-    updateChartHeightWidth(height: number, width: number): GooglePieChartOptions {
-        // get copy of default options
-        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.defaultOptions);
+        optionsCopy.colors = colors;
 
         // set new heigth/width
-        optionsCopy.height = height;
-        optionsCopy.width = width;
+        optionsCopy.height = dimension;
+        optionsCopy.width = dimension;
 
         // return options with new height/width
         return optionsCopy;
