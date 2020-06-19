@@ -84,22 +84,6 @@ export class GoogleChartService {
         ['', 8.33]
     ];
 
-    readonly keyChartOptions = {
-        pieHole: 0.4,
-        colors: [
-            '#ff0000', '#ffffff', '#ff6500',
-            '#ffffff', '#b6f903', '#059c0e',
-            '#ffffff', '#00e6c2', '#ffffff',
-            '#5a01ff', '#ffffff', '#e6008e'
-        ],
-        legend: { position: 'none' },
-        height: 600,
-        pieSliceText: 'label',
-        pieStartAngle: -14,
-        tooltip: { trigger: 'none' },
-        width: 600
-    };
-
     readonly defaultOptions: GooglePieChartOptions = {   
         colors: [
             '#ff0000', '#ff3300', '#ff6500',
@@ -115,6 +99,8 @@ export class GoogleChartService {
         tooltip: { trigger: 'none' },
         width: 600
     };
+
+    readonly PIE_CHART = 'PieChart';
 
     ngOnInit() {
         this.pieChart = new GooglePieChart();

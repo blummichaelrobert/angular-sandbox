@@ -15,5 +15,9 @@ scales dropdown next to fretboard? [todo]
 
 chord drawer => update all visuals [todo]
 
-make different height/width options for google charts based on screen width using @HostListener
+make different height/width options for google charts based on screen width using @HostListener [todo]
+
+refactor services:
+    a) wax uneeded data arrays for creating chart options. [todo]
+    b)musicKey and Interval observables in service that have listeners that responsd to | async. [todo]
 
