@@ -186,10 +186,8 @@ export class MusicComponent {
             bgColors.push(color);
         });
 
-        // set options
-        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
-        optionsCopy.colors = bgColors;
-        this.keyPickerVisual.googleChartOptions = optionsCopy;
+        // update => set options
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartColors(bgColors);
 
         this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
     }
@@ -198,9 +196,11 @@ export class MusicComponent {
     onResize(event) {
         console.log(event.target.innerWidth);
         if (event.target.innerWidth < 1585) {
-            this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions('keyPicker', 475, 475);
+            this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartHeightWidth(475, 475);
+            this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartHeightWidth(475, 475);
         } else {
-            this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+            this.intializeKeyPickerChart();
+            this.intializeKeyVisualChart();
         }
     }
 
@@ -265,10 +265,7 @@ export class MusicComponent {
 
         this.whiteOutKeyPositions(indices);
 
-        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.googleChartService.keyChartOptions);
-        optionsCopy.colors = this.keyVisualBackgroundColors;
-
-        this.musicKeyVisual.googleChartOptions = optionsCopy;
+        this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartColors(this.keyVisualBackgroundColors);
     }
 
     whiteOutKeyPositions(indices: number[]) {

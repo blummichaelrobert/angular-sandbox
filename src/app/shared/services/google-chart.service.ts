@@ -54,21 +54,6 @@ export class GoogleChartService {
         ['G#', 8.33]
     ];
 
-    readonly chromaticDataSet = [
-        ['Root', 8.33],
-        ['m2', 8.33],
-        ['M2', 8.33],
-        ['m3', 8.33],
-        ['M3', 8.33],
-        ['P4', 8.33],
-        ['d5', 8.33],
-        ['P5', 8.33],
-        ['m6', 8.33],
-        ['M6', 8.33],
-        ['m7', 8.33],
-        ['M7', 8.33]
-    ];
-
     readonly majorKeyDataSet = [
         ['R*', 8.33],
         ['', 8.33],
@@ -147,6 +132,22 @@ export class GoogleChartService {
         width: 600
     };
 
+    readonly defaultOptions: GooglePieChartOptions = {   
+        colors: [
+            '#ff0000', '#ff3300', '#ff6500',
+            '#f9ed03', '#b6f903', '#059c0e',
+            '#04d67b', '#00e6c2', '#0000ff',
+            '#5a01ff', '#ab00ff', '#e6008e'
+        ],
+        legend: { position: 'none' },
+        height: 600,
+        pieHole: 0.4,
+        pieSliceText: 'label',
+        pieStartAngle: -14,
+        tooltip: { trigger: 'none' },
+        width: 600
+    };
+
     ngOnInit() {
         this.pieChart = new GooglePieChart();
     }
@@ -194,19 +195,26 @@ export class GoogleChartService {
         return new GooglePieChart();
     }
 
-    updateChartOptions(chartType: string, height: number, width: number): GooglePieChartOptions {
+    updateChartColors(newColors: string[]): GooglePieChartOptions {
+        // get copy of default options
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.defaultOptions);
 
-        let optionsCopy: object;
-        switch (chartType) {
-            case 'keyPicker':
-                optionsCopy = this.commonService.copyObject(this.keyPickerChartOptions);
-                optionsCopy['height'] = height;
-                optionsCopy['width'] = width;
-                return optionsCopy;
-                break;
-            default:
-                return new GooglePieChartOptions();
-        }
+        // set new colors
+        optionsCopy.colors = newColors;
 
+        // return options with new colors
+        return optionsCopy;
+    }
+
+    updateChartHeightWidth(height: number, width: number): GooglePieChartOptions {
+        // get copy of default options
+        const optionsCopy: GooglePieChartOptions = this.commonService.copyObject(this.defaultOptions);
+
+        // set new heigth/width
+        optionsCopy.height = height;
+        optionsCopy.width = width;
+
+        // return options with new height/width
+        return optionsCopy;
     }
 }
