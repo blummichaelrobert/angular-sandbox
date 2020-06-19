@@ -205,10 +205,15 @@ export class MusicComponent {
 
         this.currentChartDimension = screenWidth / 3.44;
 
+        const kpBGColors = this.googleChartService.defaultOptions.colors;
         let bgColors = this.musicKeyService.getCurrentBackgroundColors();
-        bgColors = this.whiteOutKeyPositions(this.musicKeyService.majorKeyOmissionIndices, bgColors);
 
-        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
+        if (this.intervalBtnState.showingMajorKey)
+            bgColors = this.whiteOutKeyPositions(this.musicKeyService.majorKeyOmissionIndices, bgColors);
+        else
+            bgColors = this.whiteOutKeyPositions(this.musicKeyService.minorKeyOmissionIndices, bgColors);
+
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, kpBGColors);
         this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
     }
 

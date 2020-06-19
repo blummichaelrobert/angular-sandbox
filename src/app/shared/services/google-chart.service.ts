@@ -70,7 +70,7 @@ export class GoogleChartService {
     ];
 
     readonly minorKeyDataSet = [
-        ['R*', 8.33],
+        ['r*', 8.33],
         ['', 8.33],
         ['M2', 8.33],
         ['m3*', 8.33],
