@@ -84,38 +84,6 @@ export class GoogleChartService {
         ['', 8.33]
     ];
 
-    readonly keyPickerChartOptions = {
-        pieHole: 0.4,
-        colors: [
-            '#ff0000', '#ff3300', '#ff6500',
-            '#f9ed03', '#b6f903', '#059c0e',
-            '#04d67b', '#00e6c2', '#0000ff',
-            '#5a01ff', '#ab00ff', '#e6008e'
-        ],
-        legend: { position: 'none' },
-        height: 500,
-        pieSliceText: 'label',
-        pieStartAngle: -15,
-        tooltip: { trigger: 'none' },
-        width: 500
-    };
-
-    readonly chromaticChartOptions = {
-        pieHole: 0.4,
-        colors: [
-            '#ff0000', '#ff3300', '#ff6500',
-            '#f9ed03', '#b6f903', '#059c0e',
-            '#04d67b', '#00e6c2', '#0000ff',
-            '#5a01ff', '#ab00ff', '#e6008e'
-        ],
-        legend: { position: 'none' },
-        height: 500,
-        pieSliceText: 'label',
-        pieStartAngle: -15,
-        tooltip: { trigger: 'none' },
-        width: 500
-    };
-
     readonly keyChartOptions = {
         pieHole: 0.4,
         colors: [

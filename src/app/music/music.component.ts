@@ -207,7 +207,7 @@ export class MusicComponent {
     intializeKeyPickerChart() {
         this.keyPickerVisual.type = 'PieChart';
         this.keyPickerVisual.data = this.googleChartService.KeyPickerDataSet;
-        this.keyPickerVisual.googleChartOptions = this.googleChartService.keyPickerChartOptions;
+        this.keyPickerVisual.googleChartOptions = this.googleChartService.defaultOptions;
     }
 
     intializeKeyVisualChart() {
