@@ -18,7 +18,7 @@ import { CommonService } from '../shared/services/common.service';
 
 export class MusicComponent {
 
-    intervalBtnState: IntervalState;
+    intervalBtnState: IntervalStateLocal;
     showingCircleOf5ths = false;
 
     keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
@@ -142,6 +142,7 @@ export class MusicComponent {
     }
 
     handleIntervalClick(interval: string, index: number) {
+        this.musicKeyService.toggleIntervalStateProperty('showingMajor2');
         this.toggleIntervalButton(interval);
 
         if (this.intervalBtnState.showingMajorKey) {
@@ -285,7 +286,7 @@ export class MusicComponent {
     }
 }
 
-export class IntervalState {
+export class IntervalStateLocal {
     showingRoot: boolean;
     showing2nd: boolean;
     showing3rd: boolean;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MusicKey } from '../../music/music.models';
+import { MusicKey, IntervalState } from '../../music/music.models';
 import { BehaviorSubject } from 'rxjs';
 import { CommonService } from './common.service';
 
@@ -9,6 +9,23 @@ import { CommonService } from './common.service';
 export class MusicKeyService {
 
     constructor(private commonService: CommonService) { }
+
+    private intervalState: IntervalState = {
+        showingRoot: true,
+        showingMinor2: false,
+        showingMajor2: true,
+        showingMinor3: true,
+        showingMajor3: true,
+        showingPerfect4: true,
+        showingDim5: false,
+        showingPerfect5: true,
+        showingMinor6: true,
+        showingMajor6: true,
+        showingMinor7: true,
+        showingMajor7: true
+    };
+
+    intervalState$ = new BehaviorSubject<IntervalState>(null);
 
     musicKey$ = new BehaviorSubject<MusicKey>(null);
 
@@ -134,5 +151,12 @@ export class MusicKeyService {
         }
 
         this.majorKeyOmissionIndices = [1, 3, 6, 8, 10];
+    }
+
+    toggleIntervalStateProperty(property: string) {
+
+        this.intervalState[property] = !this.intervalState[property];
+        console.log(this.intervalState$.getValue());
+        this.intervalState$.next(this.intervalState);
     }
 }

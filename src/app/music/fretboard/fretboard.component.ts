@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChange } from '@angular/core';
-import { MusicKey } from '../music.models';
+import { MusicKey, IntervalState } from '../music.models';
 import { FretboardService } from './fretboard.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { FretboardService } from './fretboard.service';
 })
 
 export class FretboardComponent {
+    @Input() intervalState: IntervalState;
     @Input() musicKey: MusicKey;
 
     bgColors: MusicKey;
@@ -20,6 +21,7 @@ export class FretboardComponent {
     }
 
     ngOnChanges(changes: SimpleChange) {
+        console.log(changes);
         this.bgColors = this.fretboardService.updateIconColors(changes['musicKey']['currentValue']);
     }
 }

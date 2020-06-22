@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { GoogleChartService } from '../../shared/services/google-chart.service';
 import { MusicKeyService } from '../../shared/services/music-key.service';
 import {  GooglePieChartOptions } from '../../shared/models/google-pie-chart.model';
@@ -28,7 +28,6 @@ export class ChordProgressionComponent {
     }
 
     ngOnChanges() {
-
         if (!this.showingMajorKey) {
             this.handleProgressionSelected(['Root', 'minor6th', 'minor7th']);
             return;
