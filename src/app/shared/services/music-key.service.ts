@@ -51,6 +51,14 @@ export class MusicService {
         this.keyOmissionIndices = this.keyOmissionIndices.filter(index => index !== filter);
     }
 
+    setKeyOmmissions(keyType = 'major') {
+        if (keyType !== 'major') {
+            this.keyOmissionIndices = this.musicData.minorKeyOmissionIndices;
+            return;
+        }
+        this.keyOmissionIndices = this.musicData.majorKeyOmissionIndices;
+    }
+
     setMajorIntervalInitialState() {
         this.intervalState = {
             showingRoot: true,

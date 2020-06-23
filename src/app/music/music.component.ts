@@ -69,12 +69,12 @@ export class MusicComponent {
 
         if (!this.musicService.showingMajorKey) {
             this.musicKeyVisual.data = this.googleChartService.getKeyDataSet('minor');
-            this.updateKeyVisualizationColors(this.musicData.minorKeyOmissionIndices);
+            this.updateKeyVisualizationColors(this.musicService.keyOmissionIndices);
             return;
         }
 
         this.musicKeyVisual.data = this.googleChartService.getKeyDataSet();
-        this.updateKeyVisualizationColors(this.musicData.majorKeyOmissionIndices);
+        this.updateKeyVisualizationColors(this.musicService.keyOmissionIndices);
     }
 
     handleKeyVersionSelected(keyType: string) {
@@ -84,13 +84,15 @@ export class MusicComponent {
         if (keyType === 'minor') {
             this.musicService.setMinorIntervalIntialState();
             this.musicService.setShowingMajorKey(false);
-            this.updateKeyVisualizationColors(this.musicData.minorKeyOmissionIndices);
+            this.musicService.setKeyOmmissions('minor');
+            this.updateKeyVisualizationColors(this.musicService.keyOmissionIndices);
             return;
         }
 
         this.musicService.setMajorIntervalInitialState();
         this.musicService.setShowingMajorKey(true);
-        this.updateKeyVisualizationColors(this.musicData.majorKeyOmissionIndices);
+        this.musicService.setKeyOmmissions();
+        this.updateKeyVisualizationColors(this.musicService.keyOmissionIndices);
     }
 
     handleIntervalClick(interval: string, index: number) {
