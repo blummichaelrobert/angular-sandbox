@@ -21,6 +21,9 @@ export class FretboardComponent {
     }
 
     ngOnChanges(changes: SimpleChange) {
+        if (changes['musicKey'] === undefined || changes['musicKey'] === null)
+            return;
+
         this.bgColors = this.fretboardService.updateIconColors(changes['musicKey']['currentValue']);
     }
 }
