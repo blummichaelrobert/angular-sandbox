@@ -65,7 +65,7 @@ export class MusicService {
         this.minorKeyOmissionIndices = this.minorKeyOmissionIndices.filter(index => index !== filter);
     }
 
-    setMajorIntervalState() {
+    setMajorIntervalInitialState() {
         this.intervalState = {
             showingRoot: true,
             showingMinor2: false,
@@ -80,6 +80,27 @@ export class MusicService {
             showingMinor7: false,
             showingMajor7: true
         };
+    }
+
+    setMinorIntervalIntialState() {
+        this.intervalState = {
+            showingRoot: true,
+            showingMinor2: false,
+            showingMajor2: true,
+            showingMinor3: true,
+            showingMajor3: false,
+            showingPerfect4: true,
+            showingDim5: false,
+            showingPerfect5: true,
+            showingMinor6: true,
+            showingMajor6: false,
+            showingMinor7: true,
+            showingMajor7: false
+        };
+    }
+
+    setShowingMajorKey(currentState: boolean) {
+        this.showingMajorKey = currentState;
     }
 
     setMusicKey(selection: string) {

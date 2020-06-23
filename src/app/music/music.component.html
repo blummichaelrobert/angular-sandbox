@@ -40,8 +40,16 @@
             </google-chart>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <button type="button"
-                        [ngClass]="musicService.showingMajorKey ? 'music-btn-pressed' : 'music-btn'">
+                        *ngIf="musicService.showingMajorKey"
+                        [ngClass]="musicService.intervalState.showingRoot ? 'music-btn-pressed' : 'music-btn'"
+                        (click)="handleIntervalClick('showingRoot', 0)">
                     R
+                </button>
+                <button type="button"
+                        *ngIf="!musicService.showingMajorKey"
+                        [ngClass]="musicService.intervalState.showingRoot ?'music-btn-pressed' : 'music-btn'"
+                        (click)="handleIntervalClick('showingRoot', 0)">
+                    r
                 </button>
                 <button type="button"
                         [ngClass]="musicService.intervalState.showingMinor2 ? 'music-btn-pressed' : 'music-btn'"

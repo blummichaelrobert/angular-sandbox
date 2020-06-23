@@ -52,7 +52,7 @@ export class MusicComponent {
 
     ngOnInit() {
 
-        this.musicService.setMajorIntervalState();       
+        this.musicService.setMajorIntervalInitialState();       
 
         this.intializeKeyPickerChart();
 
@@ -131,12 +131,16 @@ export class MusicComponent {
         this.setMusicKeyVisualData(keyType);
 
         if (keyType === 'minor') {
+            this.musicService.setMinorIntervalIntialState();
+            this.musicService.setShowingMajorKey(false);
             this.musicService.resetOmissions('minor');
             this.updateKeyVisualizationColors(this.musicService.minorKeyOmissionIndices);
             return;
         }
 
         this.musicService.resetOmissions();
+        this.musicService.setMajorIntervalInitialState();
+        this.musicService.setShowingMajorKey(true);
         this.updateKeyVisualizationColors(this.musicService.majorKeyOmissionIndices);
     }
 
