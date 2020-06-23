@@ -7,7 +7,6 @@ import { MusicComponent } from './music.component';
 import { ChordProgressionComponent } from './chord-progression/chord-progression.component';
 import { FretboardComponent } from './fretboard/fretboard.component';
 import { CommonService } from '../shared/services/common.service';
-import { MinorFretboarComponent } from './fretboard/minor-fretboard.component';
 
 const routes: Routes = [{ path: '', component: MusicComponent }];
 
@@ -20,7 +19,6 @@ const routes: Routes = [{ path: '', component: MusicComponent }];
     declarations: [
         ChordProgressionComponent,
         FretboardComponent,
-        MinorFretboarComponent,
         MusicComponent
     ],
     providers: [CommonService]

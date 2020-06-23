@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { MusicKey } from '../music.models';
 import { CommonService } from '../../shared/services/common.service';
-import { MusicKeyService } from '../../shared/services/music-key.service';
+import { MusicService } from '../../shared/services/music-key.service';
 
 @Injectable()
 
 export class FretboardService {
 
     constructor(private commonService: CommonService,
-                private musicKeyService: MusicKeyService) { }
+                private musicKeyService: MusicService) { }
 
     updateIconColors(musicKey: MusicKey): MusicKey {
         const musicKeyCopy = this.commonService.copyObject(musicKey);

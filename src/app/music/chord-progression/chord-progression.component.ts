@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChange } from '@angular/core';
 import { GoogleChartService } from '../../shared/services/google-chart.service';
-import { MusicKeyService } from '../../shared/services/music-key.service';
+import { MusicService } from '../../shared/services/music-key.service';
 import {  GooglePieChartOptions } from '../../shared/models/google-pie-chart.model';
 import { MusicKey } from '../music.models';
 
@@ -22,7 +22,7 @@ export class ChordProgressionComponent {
     type = 'PieChart';
 
     constructor(private googleChartService: GoogleChartService,
-                private musicKeyService: MusicKeyService) { }
+                private musicKeyService: MusicService) { }
 
     ngOnInit() {
     }

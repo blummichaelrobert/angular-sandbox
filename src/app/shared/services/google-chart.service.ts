@@ -1,88 +1,16 @@
 import { Injectable } from '@angular/core';
 import { GooglePieChart, GooglePieChartOptions } from '../models/google-pie-chart.model';
 import { CommonService } from './common.service';
+import { MusicData } from '../../music/data/music-data';
 
 @Injectable()
 export class GoogleChartService {
 
     constructor(private commonService: CommonService) { }
 
+    musicData: MusicData = new MusicData();
+
     pieChart: GooglePieChart;
-    // todo: do I still need all of these still?
-    readonly cirleOfFifthsDataSet = [
-        ['C', 8.33],
-        ['G', 8.33],
-        ['D', 8.33],
-        ['A', 8.33],
-        ['E', 8.33],
-        ['B', 8.33],
-        ['F#', 8.33],
-        ['C#', 8.33],
-        ['G#', 8.33],
-        ['D#', 8.33],
-        ['A#', 8.33],
-        ['F', 8.33]
-    ];
-
-    readonly circleOf5thRowMap: Map<number, number> = new Map<number, number>([
-        [0, 3],
-        [1, 10],
-        [2, 5],
-        [3, 0],
-        [4, 7],
-        [5, 2],
-        [6, 9],
-        [7, 4],
-        [8, 11],
-        [9, 6],
-        [10, 1],
-        [11, 8]
-    ]);
-
-    readonly KeyPickerDataSet = [
-        ['A', 8.33],
-        ['A#', 8.33],
-        ['B', 8.33],
-        ['C', 8.33],
-        ['C#', 8.33],
-        ['D', 8.33],
-        ['D#', 8.33],
-        ['E', 8.33],
-        ['F', 8.33],
-        ['F#', 8.33],
-        ['G', 8.33],
-        ['G#', 8.33]
-    ];
-
-    readonly majorKeyDataSet = [
-        ['R*', 8.33],
-        ['', 8.33],
-        ['M2*', 8.33],
-        ['', 8.33],
-        ['M3*', 8.33],
-        ['P4', 8.33],
-        ['', 8.33],
-        ['P5*', 8.33],
-        ['', 8.33],
-        ['M6*', 8.33],
-        ['', 8.33],
-        ['M7', 8.33]
-    ];
-
-    readonly minorKeyDataSet = [
-        ['r*', 8.33],
-        ['', 8.33],
-        ['M2', 8.33],
-        ['m3*', 8.33],
-        ['', 8.33],
-        ['P4*', 8.33],
-        ['', 8.33],
-        ['P5*', 8.33],
-        ['m6', 8.33],
-        ['', 8.33],
-        ['m7*', 8.33],
-        ['', 8.33]
-    ];
 
     readonly defaultOptions: GooglePieChartOptions = {   
         colors: [
@@ -119,7 +47,7 @@ export class GoogleChartService {
     }
 
     getCircleOf5thsMappedNumber(selection: number): number {
-        return this.circleOf5thRowMap.get(selection);
+        return this.musicData.circleOf5thRowMap.get(selection);
     }
 
     getPieChart(): GooglePieChart {
@@ -132,16 +60,16 @@ export class GoogleChartService {
             this.pieChart = new GooglePieChart();
 
         if (keyType === 'minor') {
-            this.pieChart.data = this.minorKeyDataSet;
+            this.pieChart.data = this.musicData.minorKeyDataSet;
             return this.pieChart.data;
         }
 
         if (keyType === 'circleOf5ths') {
-            this.pieChart.data = this.cirleOfFifthsDataSet;
+            this.pieChart.data = this.musicData.cirleOfFifthsDataSet;
             return this.pieChart.data;
         }
 
-        this.pieChart.data = this.majorKeyDataSet;
+        this.pieChart.data = this.musicData.majorKeyDataSet;
         return this.pieChart.data;
     }
 

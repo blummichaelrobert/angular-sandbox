@@ -2,77 +2,22 @@ import { Injectable } from '@angular/core';
 import { MusicKey, IntervalState } from '../../music/music.models';
 import { BehaviorSubject } from 'rxjs';
 import { CommonService } from './common.service';
+import { MusicData } from '../../music/data/music-data';
 
 @Injectable({
     providedIn: 'root',
 })
-export class MusicKeyService {
+export class MusicService {
 
-    constructor(private commonService: CommonService) { }
-
-    private intervalState: IntervalState = {
-        showingRoot: true,
-        showingMinor2: false,
-        showingMajor2: true,
-        showingMinor3: true,
-        showingMajor3: true,
-        showingPerfect4: true,
-        showingDim5: false,
-        showingPerfect5: true,
-        showingMinor6: true,
-        showingMajor6: true,
-        showingMinor7: true,
-        showingMajor7: true
-    };
-
-    intervalState$ = new BehaviorSubject<IntervalState>(null);
-
+    // Observables
     musicKey$ = new BehaviorSubject<MusicKey>(null);
 
-    chromaticMap: Map<string, string[]> = new Map([
-        ['0', ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']],
-        ['1', ['A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A']],
-        ['2', ['B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#']],
-        ['3', ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']],
-        ['4', ['C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C']],
-        ['5', ['D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#']],
-        ['6', ['D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D']],
-        ['7', ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#']],
-        ['8', ['F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E']],
-        ['9', ['F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F']],
-        ['10', ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#']],
-        ['11', ['G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G']]
-    ]);
+    musicData: MusicData = new MusicData();
+    showingMajorKey = true;
 
-    noteMap: Map<number, string> = new Map([
-        [1, 'A'],
-        [2, 'A#'],
-        [3, 'B'],
-        [4, 'C'],
-        [5, 'C#'],
-        [6, 'D'],
-        [7, 'D#'],
-        [8, 'E'],
-        [9, 'F'],
-        [10, 'F#'],
-        [11, 'G'],
-        [12, 'G#']
-    ]);
+    intervalState: IntervalState = new IntervalState();
 
-    colorMap: Map<string, string> = new Map([
-        ['A', '#ff0000'],
-        ['A#', '#ff3300'],
-        ['B', '#ff6500'],
-        ['C', '#f9ed03'],
-        ['C#', '#b6f903'],
-        ['D', '#059c0e'],
-        ['D#', '#04d67b'],
-        ['E', '#00e6c2'],
-        ['F', '#0000ff'],
-        ['F#', '#5a01ff'],
-        ['G', '#ab00ff'],
-        ['G#', '#e6008e']
-    ]);
+    constructor(private commonService: CommonService) { }
 
     majorKeyOmissionIndices: number[] = [1, 3, 6, 8, 10];
 
@@ -102,7 +47,7 @@ export class MusicKeyService {
     }
 
     getColor(key: string): string {
-        return this.colorMap.get(key);
+        return this.musicData.colorMap.get(key);
     }
 
     getMusicKey(): MusicKey { return this.musicKey$.getValue(); }
@@ -120,9 +65,26 @@ export class MusicKeyService {
         this.minorKeyOmissionIndices = this.minorKeyOmissionIndices.filter(index => index !== filter);
     }
 
+    setMajorIntervalState() {
+        this.intervalState = {
+            showingRoot: true,
+            showingMinor2: false,
+            showingMajor2: true,
+            showingMinor3: false,
+            showingMajor3: true,
+            showingPerfect4: true,
+            showingDim5: false,
+            showingPerfect5: true,
+            showingMinor6: false,
+            showingMajor6: true,
+            showingMinor7: false,
+            showingMajor7: true
+        };
+    }
+
     setMusicKey(selection: string) {
 
-        const rawMusicKey: string[] = this.chromaticMap.get(selection);
+        const rawMusicKey: string[] = this.musicData.chromaticMap.get(selection);
 
         this.nextMusicKey(rawMusicKey);
     }
@@ -154,9 +116,6 @@ export class MusicKeyService {
     }
 
     toggleIntervalStateProperty(property: string) {
-
         this.intervalState[property] = !this.intervalState[property];
-        console.log(this.intervalState$.getValue());
-        this.intervalState$.next(this.intervalState);
     }
 }
