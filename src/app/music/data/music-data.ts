@@ -62,6 +62,21 @@ export class MusicData {
         ['G#', '#e6008e']
     ]);
 
+    readonly intervalMap: Map<number, string> = new Map([
+        [0, 'showingRoot'],
+        [1, 'showingMinor2'],
+        [2, 'showingMajor2'],
+        [3, 'showingMinor3'],
+        [4, 'showingMajor3'],
+        [5, 'showingPerfect4'],
+        [6, 'showingDim5'],
+        [7, 'showingPerfect5'],
+        [8, 'showingMinor6'],
+        [9, 'showingMajor6'],
+        [10, 'showingMinor7'],
+        [11, 'showingMajor7']
+    ]);
+
     readonly KeyPickerDataSet = [
         ['A', 8.33],
         ['A#', 8.33],
@@ -76,6 +91,10 @@ export class MusicData {
         ['G', 8.33],
         ['G#', 8.33]
     ];
+
+    readonly majorKeyOmissionIndices: number[] = [1, 3, 6, 8, 10];
+
+    readonly minorKeyOmissionIndices: number[] = [1, 4, 6, 9, 11];
 
     readonly majorKeyDataSet = [
         ['I*', 8.33],

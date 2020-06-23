@@ -9,26 +9,16 @@ import { MusicData } from '../../music/data/music-data';
 })
 export class MusicService {
 
-    // Observables
     musicKey$ = new BehaviorSubject<MusicKey>(null);
-
     musicData: MusicData = new MusicData();
-    showingMajorKey = true;
-
     intervalState: IntervalState = new IntervalState();
+    keyOmissionIndices: number[] = [1, 3, 6, 8, 10];
+    showingMajorKey = true;
 
     constructor(private commonService: CommonService) { }
 
-    majorKeyOmissionIndices: number[] = [1, 3, 6, 8, 10];
-
-    minorKeyOmissionIndices: number[] = [1, 4, 6, 9, 11];
-
-    addIndexToMajorOmissions(index: number) {
-        this.majorKeyOmissionIndices.push(index);
-    }
-
-    addIndexToMinorOmissions(index: number) {
-        this.minorKeyOmissionIndices.push(index);
+    addIndexToOmissions(index: number) {
+        this.keyOmissionIndices.push(index);
     }
 
     getCurrentBackgroundColors(): string[] {
@@ -57,12 +47,8 @@ export class MusicService {
         this.musicKey$.next(this.setMusicKeyProps(rawMusicKey));
     }
 
-    removeIndexFromMajorOmissions(filter: number) {
-        this.majorKeyOmissionIndices = this.majorKeyOmissionIndices.filter(index => index !== filter);
-    }
-
-    removeIndexFromMinorOmissions(filter: number) {
-        this.minorKeyOmissionIndices = this.minorKeyOmissionIndices.filter(index => index !== filter);
+    removeIndexFromOmissions(filter: number) {
+        this.keyOmissionIndices = this.keyOmissionIndices.filter(index => index !== filter);
     }
 
     setMajorIntervalInitialState() {
@@ -125,15 +111,6 @@ export class MusicService {
             minor7th: rawMusicKey[10],
             Major7th: rawMusicKey[11]
         };
-    }
-
-    resetOmissions(type = 'major') {
-        if (type !== 'major') {
-            this.minorKeyOmissionIndices = [1, 4, 6, 9, 11];
-            return;
-        }
-
-        this.majorKeyOmissionIndices = [1, 3, 6, 8, 10];
     }
 
     toggleIntervalStateProperty(property: string) {

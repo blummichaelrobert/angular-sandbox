@@ -3,8 +3,6 @@ import { Component, SimpleChange, HostListener } from '@angular/core';
 import { GoogleChartService } from '../shared/services/google-chart.service';
 import { MusicService } from '../shared/services/music-key.service';
 import { GooglePieChart } from '../shared/models/google-pie-chart.model';
-import { MusicKey } from './music.models';
-import { CommonService } from '../shared/services/common.service';
 import { MusicData } from './data/music-data';
 
 @Component({
@@ -12,40 +10,20 @@ import { MusicData } from './data/music-data';
     templateUrl: './music.component.html',
     styleUrls: ['./music.component.css'],
     providers: [
-        CommonService,
         GoogleChartService
     ]
 })
 
 export class MusicComponent {
 
-    showingCircleOf5ths = false;
-
+    currentChartDimension = 600;
     musicData: MusicData = new MusicData();
+    showingCircleOf5ths = false;
 
     keyPickerVisual: GooglePieChart = this.googleChartService.getNewPieChart();
     musicKeyVisual: GooglePieChart = this.googleChartService.getNewPieChart();
-    musicKey: MusicKey = new MusicKey();
-
-    // todo: is this the best place for this?
-    currentChartDimension = 600;
-
-    // todo: is this the best place for this?
-    intervalMap: Map<number, string> = new Map([
-        [0, 'showingRoot'],
-        [2, 'showing2nd'],
-        [3, 'showing3rd'],
-        [4, 'showing3rd'],
-        [5, 'showing4th'],
-        [7, 'showing5th'],
-        [8, 'showing6th'],
-        [9, 'showing6th'],
-        [10, 'showing7th'],
-        [11, 'showing7th']
-    ]);
 
     constructor(
-        private commonService: CommonService,
         private googleChartService: GoogleChartService,
         public  musicService: MusicService       
     ) { }
@@ -58,49 +36,25 @@ export class MusicComponent {
 
         this.intializeKeyVisualChart();
               
-        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] }); // setting colors here
+        this.handleKeySelected({ selection: [{ column: 0, row: 0 }] });
 
         const innerWidth = window.innerWidth;
 
-        this.onResize({ target: { innerWidth: innerWidth } }); // resetting colors, setting height width here
+        this.onResize({ target: { innerWidth: innerWidth } });
     }
 
     ngOnChanges(changes: SimpleChange) {
         console.log(changes);
     }
 
-    determineViableSelection(selection: number): boolean {
-        if (selection === 1 || selection === 6)
-            return false;
-
-        if (this.musicService.showingMajorKey) {
-            if (selection === 3 || selection === 8 || selection === 10)
-                return false;
-        }
-
-        if (!this.musicService.showingMajorKey) {
-            if (selection === 4 || selection === 9 || selection === 11) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     getInterval(interval: number) {
-        return this.intervalMap.get(interval);
+        return this.musicData.intervalMap.get(interval);
     }
 
     handleIntervalSelectedFromChart(event: { selection: [{ column: number; row: number }] }) {
         const selection = event.selection[0].row;
-
-        if (this.determineViableSelection(selection)) {
-            const interval = this.getInterval(selection);
-
-            this.handleIntervalClick(interval, selection);
-        } else { // user clicked an empty spot on visual.
-            return;
-        }
+        const interval = this.getInterval(selection);
+        this.handleIntervalClick(interval, selection);
     }
 
     handleKeySelected(event: { selection: [{ column: number; row: number }] }) {
@@ -113,17 +67,14 @@ export class MusicComponent {
 
         this.musicService.setMusicKey(selection.toString());
 
-        // update input for chord progression => 
-        this.musicKey = this.musicService.getMusicKey();
-
         if (!this.musicService.showingMajorKey) {
             this.musicKeyVisual.data = this.googleChartService.getKeyDataSet('minor');
-            this.updateKeyVisualizationColors(this.musicService.minorKeyOmissionIndices);
+            this.updateKeyVisualizationColors(this.musicData.minorKeyOmissionIndices);
             return;
         }
 
         this.musicKeyVisual.data = this.googleChartService.getKeyDataSet();
-        this.updateKeyVisualizationColors(this.musicService.majorKeyOmissionIndices);
+        this.updateKeyVisualizationColors(this.musicData.majorKeyOmissionIndices);
     }
 
     handleKeyVersionSelected(keyType: string) {
@@ -133,55 +84,25 @@ export class MusicComponent {
         if (keyType === 'minor') {
             this.musicService.setMinorIntervalIntialState();
             this.musicService.setShowingMajorKey(false);
-            this.musicService.resetOmissions('minor');
-            this.updateKeyVisualizationColors(this.musicService.minorKeyOmissionIndices);
+            this.updateKeyVisualizationColors(this.musicData.minorKeyOmissionIndices);
             return;
         }
 
-        this.musicService.resetOmissions();
         this.musicService.setMajorIntervalInitialState();
         this.musicService.setShowingMajorKey(true);
-        this.updateKeyVisualizationColors(this.musicService.majorKeyOmissionIndices);
+        this.updateKeyVisualizationColors(this.musicData.majorKeyOmissionIndices);
     }
 
     handleIntervalClick(interval: string, index: number) {
 
-        // update music service
-        // update fretboard
         this.musicService.toggleIntervalStateProperty(interval);
 
-        // update music key visual
-
-        
-        console.log(interval);
-        
-        // this.toggleIntervalButton(interval);
-
-        if (this.musicService.showingMajorKey) {
-            this.handleMajorIntervalClick(interval, index);
-        }
-        else {
-            this.handleMinorIntervalClick(interval, index);
-        }
-    }
-
-    handleMajorIntervalClick(interval: string, index: number) {
         if (this.musicService.intervalState[interval])
-            this.musicService.removeIndexFromMajorOmissions(index);
+            this.musicService.removeIndexFromOmissions(index);
         else
-            this.musicService.addIndexToMajorOmissions(index);
+            this.musicService.addIndexToOmissions(index);
 
-        this.updateKeyVisualizationColors(this.musicService.majorKeyOmissionIndices);
-    }
-
-    handleMinorIntervalClick(interval: string, index: number) {
-        this.setMusicKeyVisualData('minor');
-        if (this.musicService.intervalState[interval])
-            this.musicService.removeIndexFromMinorOmissions(index);
-        else
-            this.musicService.addIndexToMinorOmissions(index);
-
-        this.updateKeyVisualizationColors(this.musicService.minorKeyOmissionIndices);
+        this.updateKeyVisualizationColors(this.musicService.keyOmissionIndices);
     }
 
     handleShowCircleByPerfect5ths() {
@@ -221,9 +142,9 @@ export class MusicComponent {
         let bgColors = this.musicService.getCurrentBackgroundColors();
 
         if (this.musicService.showingMajorKey)
-            bgColors = this.whiteOutKeyPositions(this.musicService.majorKeyOmissionIndices, bgColors);
+            bgColors = this.whiteOutKeyPositions(this.musicData.majorKeyOmissionIndices, bgColors);
         else
-            bgColors = this.whiteOutKeyPositions(this.musicService.minorKeyOmissionIndices, bgColors);
+            bgColors = this.whiteOutKeyPositions(this.musicData.minorKeyOmissionIndices, bgColors);
 
         this.keyPickerVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, kpBGColors);
         this.musicKeyVisual.googleChartOptions = this.googleChartService.updateChartOptions(this.currentChartDimension, bgColors);
@@ -239,7 +160,7 @@ export class MusicComponent {
         this.musicKeyVisual.type = this.googleChartService.PIE_CHART;
         this.musicKeyVisual.data = this.musicData.majorKeyDataSet;
         this.musicKeyVisual.googleChartOptions = this.googleChartService.defaultOptions;
-        this.updateKeyVisualizationColors(this.musicService.majorKeyOmissionIndices);
+        this.updateKeyVisualizationColors(this.musicData.majorKeyOmissionIndices);
     }
 
     setMusicKeyVisualData(keyType = 'major') {

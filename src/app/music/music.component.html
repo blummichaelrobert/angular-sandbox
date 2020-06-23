@@ -122,6 +122,11 @@
     </div>
 </div>
 
-<fretboard [musicKey]="musicService.musicKey$ | async"
-           [intervalState]="musicService.intervalState"></fretboard>
+<div class="row">
+    <div class="col-xs-12">
+        <fretboard [musicKey]="musicService.musicKey$ | async"
+                   [intervalState]="musicService.intervalState"></fretboard>
+    </div>
+</div>
+
 
