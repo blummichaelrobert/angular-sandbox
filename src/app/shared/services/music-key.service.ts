@@ -13,6 +13,7 @@ export class MusicService {
     musicData: MusicData = new MusicData();
     intervalState: IntervalState = new IntervalState();
     keyOmissionIndices: number[] = [1, 3, 6, 8, 10];
+    rootNote: string;
     showingMajorKey = true;
 
     constructor(private commonService: CommonService) { }
@@ -100,6 +101,8 @@ export class MusicService {
     setMusicKey(selection: string) {
 
         const rawMusicKey: string[] = this.musicData.chromaticMap.get(selection);
+
+        this.rootNote = rawMusicKey[0];
 
         this.nextMusicKey(rawMusicKey);
     }

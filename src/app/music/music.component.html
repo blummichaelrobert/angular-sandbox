@@ -30,8 +30,8 @@
      </div>
     <div class="col-xs-4">
         <div class="panel panel-default">
-            <h3 *ngIf="musicService.showingMajorKey">Major Key:</h3>
-            <h3 *ngIf="!musicService.showingMajorKey">Minor Key:</h3>
+            <h3 *ngIf="musicService.showingMajorKey">{{musicService.rootNote}} Major Key:</h3>
+            <h3 *ngIf="!musicService.showingMajorKey">{{musicService.rootNote}} Minor Key:</h3>
             <google-chart #scaleChart
                           [type]="musicKeyVisual.type"
                           [data]="musicKeyVisual.data"
