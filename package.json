@@ -22,7 +22,7 @@
     "@angular/router": "~9.1.9",
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "angular-google-charts": "^1.1.4",
-    "bootstrap": "^3.4.0",
+    "bootstrap": "^3.4.1",
     "jquery": "^3.5.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
